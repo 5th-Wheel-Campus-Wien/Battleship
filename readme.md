@@ -19,4 +19,5 @@ A JavaFX implementation of the classic Battleship game for our CS Programming 1 
 - Paws26  
 - LukasPamperl
 - sarahhennenfeind
-- fer875
+- fer875 
+
