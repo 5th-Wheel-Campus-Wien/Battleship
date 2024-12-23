@@ -1,77 +1,102 @@
 #!/bin/bash
 
-info() {
-    echo "Prepares machine for compile."
+set -euo pipefail
 
+# Colors for better visibility
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+info() {
+    echo -e "${GREEN}Prepares development environment for compilation${NC}"
     usage
 }
 
 usage() {
-    echo "usage: setup.sh [options]
+    echo -e "Usage: setup.sh [options]
 
--v        Make it verbose
--h        Show this help"
+Options:
+    -v        Enable verbose output
+    -h        Show this help message
+    -s        Skip Java version check"
 }
 
-ALL=YES
+log() {
+    echo -e "${GREEN}[INFO]${NC} $1"
+}
 
-while getopts "hv" opt; do
+error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+    exit 1
+}
+
+check_java() {
+    if [ -z "${JAVA_HOME:-}" ]; then
+        error "JAVA_HOME is not set. Please set it to the path of your Java 21 installation."
+    fi
+
+    if [ ! -x "$JAVA_HOME/bin/java" ]; then
+        error "JAVA_HOME is set to '$JAVA_HOME', but no valid 'java' executable was found. Please check your Java installation."
+    fi
+
+    JAVA_VERSION_OUTPUT=$("$JAVA_HOME/bin/java" -version 2>&1 | head -n 1 | awk -F '"' '{print $2}')
+    JAVA_MAJOR_VERSION=$(echo "$JAVA_VERSION_OUTPUT" | awk -F '.' '{print $1}')
+
+    if [[ "$JAVA_MAJOR_VERSION" =~ ^[0-9]+$ ]]; then
+        if [ "$JAVA_MAJOR_VERSION" -lt 21 ]; then
+            error "Java version $JAVA_MAJOR_VERSION detected. Java 21 or higher is required.
+${YELLOW}Hint: Ensure JAVA_HOME points to a valid Java 21 or higher installation.${NC}"
+        fi
+    else
+        error "Unable to determine Java version. Please ensure Java 21 or higher is installed."
+    fi
+
+    log "Java $JAVA_VERSION_OUTPUT detected"
+}
+
+# Initialize variables
+VERBOSE=""
+SKIP_JAVA_CHECK=""
+MAVEN_SWITCH=""
+
+while getopts "hvs" opt; do
     case $opt in
         v)
-            VERBOSE="-v"
+            VERBOSE=true
             ;;
         h)
             info
             exit 0
             ;;
+        s)
+            SKIP_JAVA_CHECK=true
+            ;;
         \?)
-            echo "Use -h for help"
-            exit 1
+            error "Invalid option. Use -h for help"
             ;;
     esac
 done
 
+log "Setting up development environment"
 
-echo "Setting up dev machine"
-
-if [ ! command -v $JAVA_HOME/bin/java &> /dev/null ]
-then
-    echo "Java is not installed. Please install Java 21 or higher."
-   	exit 1
+# Check Java version unless skipped
+if [ -z "${SKIP_JAVA_CHECK}" ]; then
+    check_java
 fi
 
-JAVA_VERSION_OUTPUT=$($JAVA_HOME/bin/java -version 2>&1 | head -n 1 | awk -F '"' '{print $2}')
-JAVA_MAJOR_VERSION=$(echo "$JAVA_VERSION_OUTPUT" | awk -F '.' '{print $1}')
-
-if [[ "$JAVA_MAJOR_VERSION" =~ ^[0-9]+$ ]]; then
-    if [ "$JAVA_MAJOR_VERSION" -lt 21 ]; then
-        echo "Java version $JAVA_MAJOR_VERSION is installed. Java 21 or higher is required."
-        echo "Hint: Your environment may default to an older version. Make sure to set JAVA_HOME to a current java version."
-        echo "  Example: export JAVA_HOME=/usr/lib/jvm/java-21-openjdk/"
-        exit 1
-    fi
-else
-    echo "Unable to determine Java version. Please ensure Java 21 or higher is installed."
-    exit 1
+# Set Maven verbosity
+if [ -z "${VERBOSE}" ]; then
+    MAVEN_SWITCH="$MAVEN_SWITCH -q"
 fi
 
-if [ ! $VERBOSE ]
-then
-	MAVEN_SWITCH="$MAVEN_SWITCH -q"
-fi
+# Ensure Maven wrapper is executable
+chmod +x ./mvnw
 
-echo "  Clean Installing dependencies"
-./mvnw clean install $MAVEN_SWITCH
+log "Installing dependencies"
+./mvnw clean install $MAVEN_SWITCH || error "Dependency installation failed"
 
-if [ $? -ne 0 ]; then
-    echo "Dependency installation failed."
-    exit 1
-fi
+log "Cleaning artifacts"
+./mvnw clean $MAVEN_SWITCH || error "Artifact clean failed"
 
-echo "  Cleaning artifacts"
-./mvnw clean $MAVEN_SWITCH
-
-if [ $? -ne 0 ]; then
-    echo "Artifact clean failed."
-    exit 1
-fi
+log "Setup completed successfully! 🚀"
