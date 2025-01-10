@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.battleship.HelloController">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+   <children>
+      <Label text="Battleship">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
+      <Button mnemonicParsing="false" fx:id="startButton" onAction="#onStartButtonClick" text="Start">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Button>
+   </children>
+</VBox>
