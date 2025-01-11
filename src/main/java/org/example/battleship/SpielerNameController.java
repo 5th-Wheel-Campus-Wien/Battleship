@@ -15,7 +15,7 @@ public class SpielerNameController extends Application {
     public void start(Stage primaryStage) {
        primaryStage.setTitle("Battleship");
 
-       VBox root = new VBox();
+       VBox root = new VBox(10);
        root.setAlignment(Pos.CENTER);
        root.setPadding(new Insets(20));
 
