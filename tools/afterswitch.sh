@@ -1,35 +1,50 @@
 #!/bin/bash
 
-SCRIPT_ROOT="$(cd "$(dirname "$0")" && pwd)"
+set -euo pipefail
+
+# Colors for better visibility
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
 
 info() {
-    echo "After Switch for 5th Wheel Battleship.
-Compiles and prepares machine for run."
-
+    echo -e "${GREEN}After Switch for 5th Wheel Battleship${NC}"
+    echo -e "Compiles and prepares the machine for running."
     usage
 }
 
 usage() {
-    echo "usage: afterswitch [options]
-
--s        Run Setup
--b        Run Build
--v        Make it verbose
--h        Show this help"
+    echo -e "Usage: afterswitch.sh [options]\n"
+    echo -e "Options:"
+    echo -e "    -s        Run Setup"
+    echo -e "    -b        Run Build"
+    echo -e "    -v        Enable verbose output"
+    echo -e "    -h        Show this help message"
 }
 
-ALL=YES
+log() {
+    echo -e "${GREEN}[INFO]${NC} $1"
+}
 
-while getopts "sbhv" opt; do
+error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+    exit 1
+}
+
+# Initialize variables
+SETUP=false
+BUILD=false
+VERBOSE=""
+
+while getopts "sbvh" opt; do
     case $opt in
-    	s)
-    		ALL=
-    		SETUP=YES
-    		;;
-    	b)
-    		ALL=
-    		BUILD=YES
-    		;;
+        s)
+            SETUP=true
+            ;;
+        b)
+            BUILD=true
+            ;;
         v)
             VERBOSE="-v"
             ;;
@@ -38,34 +53,27 @@ while getopts "sbhv" opt; do
             exit 0
             ;;
         \?)
-            echo "Use -h for help"
-            exit 1
+            error "Invalid option. Use -h for help."
             ;;
     esac
 done
 
-if [ $ALL ]
-then
-	SETUP=YES
-	BUILD=YES
+# Default to running both Setup and Build if no specific options were provided
+if ! $SETUP && ! $BUILD; then
+    SETUP=true
+    BUILD=true
 fi
 
-if [ $SETUP ]
-then
-	$SCRIPT_ROOT/setup.sh $VERBOSE
-	if [ $? -ne 0 ]; then
-	    echo "Setup failed."
-	    exit 1
-	fi
+SCRIPT_ROOT="$(cd "$(dirname "$0")" && pwd)"
+
+if $SETUP; then
+    log "Running Setup..."
+    "$SCRIPT_ROOT/setup.sh" $VERBOSE || error "Setup failed."
 fi
 
-if [ $BUILD ]
-then
-	$SCRIPT_ROOT/build.sh $VERBOSE
-	if [ $? -ne 0 ]; then
-	    echo "Build failed."
-	    exit 1
-	fi
+if $BUILD; then
+    log "Running Build..."
+    "$SCRIPT_ROOT/build.sh" $VERBOSE || error "Build failed."
 fi
 
-echo "Afterswitch completed."
+log "Afterswitch completed successfully!"

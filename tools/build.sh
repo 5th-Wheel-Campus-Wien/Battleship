@@ -1,54 +1,69 @@
 #!/bin/bash
 
-info() {
-    echo "Compiles project."
+set -euo pipefail
 
+# Colors for better visibility
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+info() {
+    echo -e "${GREEN}Compiles project${NC}"
     usage
 }
 
 usage() {
-    echo "usage: setup.sh [options]
+    echo -e "Usage: build.sh [options]
 
--v        Make it verbose
--h        Show this help"
+Options:
+    -v        Enable verbose output
+    -h        Show this help message"
 }
 
-ALL=YES
+log() {
+    echo -e "${GREEN}[INFO]${NC} $1"
+}
+
+error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+    exit 1
+}
+
+# Initialize variables
+VERBOSE=""
+MAVEN_SWITCH=""
 
 while getopts "hv" opt; do
     case $opt in
         v)
-            VERBOSE="-v"
+            VERBOSE=true
             ;;
         h)
             info
             exit 0
             ;;
         \?)
-            echo "Use -h for help"
-            exit 1
+            error "Invalid option. Use -h for help"
             ;;
     esac
 done
 
+log "Starting compilation process"
 
-echo "Compiling project"
-
-if [ ! command -v java &> /dev/null ]
-then
-	echo "java is required to build"
-	exit 1
+if ! command -v java &> /dev/null; then
+    error "Java is not installed. Please install Java before building"
 fi
 
-if [ ! $VERBOSE ]
-then
-	MAVEN_SWITCH="$MAVEN_SWITCH -q"
+# Set Maven verbosity
+if [ -z "${VERBOSE}" ]; then
+    MAVEN_SWITCH="$MAVEN_SWITCH -q"
 fi
 
-echo "  Compiling"
-./mvnw compile $MAVEN_SWITCH
+# Ensure Maven wrapper is executable
+chmod +x ./mvnw
 
-if [ $? -ne 0 ]; then
-    echo "Compile failed."
-    exit 1
-fi
+log "Compiling project"
+./mvnw compile $MAVEN_SWITCH || error "Compilation failed"
+
+log "Build completed successfully! 🚀"
