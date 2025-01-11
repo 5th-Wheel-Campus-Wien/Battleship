@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.battleship.WinScreenController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0">
+         <children>
+            <Label fx:id="winnerLabel" alignment="CENTER" text="{Player} has won!">
+               <font>
+                  <Font size="48.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <Region maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="1240.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Region>
+            <Button fx:id="continueButton" alignment="CENTER" mnemonicParsing="false" onAction="#onContinueButtonClick" text="CONTINUE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
