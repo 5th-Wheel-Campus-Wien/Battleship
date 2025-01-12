@@ -3,7 +3,8 @@ module org.example.battleship {
     requires javafx.fxml;
 
     requires com.almasb.fxgl.all;
+    requires java.desktop;
 
-    opens org.example.battleship to javafx.fxml;
-    exports org.example.battleship;
+    opens at.fifthwheel.battleship to javafx.fxml;
+    exports at.fifthwheel.battleship;
 }
