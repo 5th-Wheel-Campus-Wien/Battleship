@@ -2,14 +2,19 @@ package at.fifthwheel.battleship;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -49,7 +54,15 @@ public class GameSetupController {
 
     private Rectangle lastPlacedShipRect;
 
+    private boolean isMultiPlayer = true;
     private boolean p1Done = false;
+
+    private Player p1;
+    private Player p2;
+    private Player.PlayerUI playerUI_P1;
+    private Player.PlayerUI playerUI_P2;
+    private Player.PlayerUI activePlayerUI;
+
 
     @FXML
     public void initialize() {
@@ -75,20 +88,33 @@ public class GameSetupController {
         shipOrigins_P1 = new HashMap<>();
         shipOrigins_P2 = new HashMap<>();
 
+        playerUI_P1 = new Player.PlayerUI(shipContainer_P1, gameSetupGrid_P1, shipsP1, shipOrigins_P1, rectangleShipMap_P1, btnRotateShip_P1);
         initialize(true);
-        initialize(false);
+
+        if (isMultiPlayer) {
+            playerUI_P2 = new Player.PlayerUI(shipContainer_P2, gameSetupGrid_P2, shipsP2, shipOrigins_P2, rectangleShipMap_P2, btnRotateShip_P2);
+            initialize(false);
+        }
 
         btnContinue.setLayoutX(630);
         btnContinue.setLayoutY(650);
+
     }
 
     private void initialize(boolean isPlayer1) {
-        ObservableList<Ship> ships = isPlayer1 ? shipsP1 : shipsP2;
-        Pane shipContainer = isPlayer1 ? shipContainer_P1 : shipContainer_P2;
-        Map<Rectangle, Ship> rectangleShipMap = isPlayer1 ? rectangleShipMap_P1 : rectangleShipMap_P2;
-        Map<Rectangle, Point> shipOrigins = isPlayer1 ? shipOrigins_P1 : shipOrigins_P2;
-        GridPane gameSetupGrid = isPlayer1 ? gameSetupGrid_P1 : gameSetupGrid_P2;
-        Button btnRotateShip = isPlayer1 ? btnRotateShip_P1 : btnRotateShip_P2;
+
+        if (isPlayer1) {
+            activePlayerUI = playerUI_P1;
+        } else {
+            activePlayerUI = playerUI_P2;
+        }
+
+        ObservableList<Ship> ships = activePlayerUI.getShips();
+        Pane shipContainer = activePlayerUI.getShipContainer();
+        Map<Rectangle, Ship> rectangleShipMap = activePlayerUI.getRectangleShipMap();
+        Map<Rectangle, Point> shipOrigins = activePlayerUI.getShipOrigins();
+        GridPane gameSetupGrid = activePlayerUI.getGameSetupGrid();
+        Button btnRotateShip = activePlayerUI.getBtnRotateShip();
 
         shipContainer.setLayoutX(gameSetupGrid.getLayoutX() - 105);
         shipContainer.setLayoutY(gameSetupGrid.getLayoutY());
@@ -119,6 +145,7 @@ public class GameSetupController {
 
             if (!isPlayer1) {
                 shipRect.setDisable(true);
+                btnRotateShip.setDisable(true);
             }
 
         }
@@ -378,19 +405,41 @@ public class GameSetupController {
     }
 
     @FXML
-    private void continueToNextStep() {
+    private void continueToNextStep(ActionEvent event) {
         Map<Rectangle, Ship> rectShipMap = p1Done ? rectangleShipMap_P2 : rectangleShipMap_P1;
 
         for (Ship ship : rectShipMap.values()) {
             if (Arrays.stream(ship.boardIndices).anyMatch(x -> x < 0)) {
-                // TODO: Alert / Label unter Button "alle Schiffe müssen platziert sein" ausgeben ??
+                // TODO: Alert / Label unter Button "alle Schiffe müssen platziert sein" ausgeben ?
                 return;
             }
         }
 
         finishSetup();
-        p1Done = true;
+
         // TODO: continue to next scene (gameplay)
+
+        if (p1Done || isMultiPlayer) {
+            try {
+                // Load the new FXML file
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("gameplay-view.fxml"));
+                Parent newRoot = loader.load();
+
+                // Create a new scene
+                Scene newScene = new Scene(newRoot);
+
+                // Get the current stage (window)
+                Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                // Set the new scene on the current stage
+                currentStage.setScene(newScene);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            p1Done = true;
+        }
     }
 
     private void finishSetup() {
@@ -405,14 +454,14 @@ public class GameSetupController {
             ship.setDisable(true);
         }
 
-        Pane shipContainer2 = p1Done ? shipContainer_P1 : shipContainer_P2;
-
-        for (Node node : shipContainer2.getChildren()) {
-            if (!(node instanceof Rectangle)) {
-                continue;
+        if (p1Done) {
+            for (Node node : shipContainer_P2.getChildren()) {
+                if (!(node instanceof Rectangle)) {
+                    continue;
+                }
+                var ship = (Rectangle) node;
+                ship.setDisable(false);
             }
-            var ship = (Rectangle) node;
-            ship.setDisable(false);
         }
 
         lastPlacedShipRect = null;

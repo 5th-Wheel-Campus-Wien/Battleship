@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="at.fifthwheel.battleship.GameplayController"
+            prefHeight="720.0" prefWidth="1280.0">
+
+
+    <GridPane fx:id="gameBoardGrid_P1" gridLinesVisible="true"
+              layoutX="200.0"
+              layoutY="160.0"
+              viewOrder="1">
+        <!-- The grid is dynamically populated in the controller -->
+    </GridPane>
+
+
+    <GridPane fx:id="gameBoardGrid_P2" gridLinesVisible="true"
+              layoutX="720.0"
+              layoutY="160.0"
+              viewOrder="1">
+        <!-- The grid is dynamically populated in the controller -->
+    </GridPane>
+
+</AnchorPane>

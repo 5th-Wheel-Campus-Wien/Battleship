@@ -7,12 +7,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class BattleShipApp extends Application {
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("titlescreen-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(BattleShipApp.class.getResource("game-setup-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
-        stage.setTitle("Hello!");
+
+        stage.setTitle("Battleship");
         stage.setScene(scene);
         stage.show();
     }
@@ -20,4 +22,5 @@ public class HelloApplication extends Application {
     public static void main(String[] args) {
         launch();
     }
+
 }
