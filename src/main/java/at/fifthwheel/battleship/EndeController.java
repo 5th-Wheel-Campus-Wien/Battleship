@@ -1,4 +1,4 @@
-package org.example.battleship;
+package at.fifthwheel.battleship;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
