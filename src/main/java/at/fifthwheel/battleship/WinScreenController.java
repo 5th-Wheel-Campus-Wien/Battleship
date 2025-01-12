@@ -1,4 +1,4 @@
-package org.example.battleship;
+package at.fifthwheel.battleship;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
