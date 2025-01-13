@@ -16,7 +16,7 @@ public class TitleScreenController {
 
     @FXML
     protected void onStartButtonClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("winscreen-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("game-setup-view.fxml"));
         Parent gameView = loader.load();
 
         // Get the current stage

@@ -19,7 +19,7 @@ public class WinScreenController {
 
     @FXML
     protected void onContinueButtonClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("titlescreen-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("endscreen-view.fxml"));
         Parent gameView = loader.load();
 
         // Get the current stage
