@@ -10,6 +10,12 @@ import javafx.scene.control.Label;
 
 public class EndScreenController extends Application {
 
+    private SceneManager sceneManager;
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Battleship");

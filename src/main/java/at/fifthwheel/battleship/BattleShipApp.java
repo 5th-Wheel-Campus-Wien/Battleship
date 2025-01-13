@@ -9,13 +9,58 @@ import java.io.IOException;
 
 public class BattleShipApp extends Application {
 
+    private SceneManager sceneManager;
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(BattleShipApp.class.getResource("game-setup-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
+        SceneManager sceneManager = new SceneManager(stage);
+
+        // Register PlayerNameScene
+        FXMLLoader playerNameLoader = new FXMLLoader(getClass().getResource("playername-view.fxml"));
+        Scene playerNameScene = new Scene(playerNameLoader.load());
+        PlayerNameController playerNameController = playerNameLoader.getController();
+        playerNameController.setSceneManager(sceneManager);
+
+        sceneManager.registerScene("playerNameSelection", playerNameScene);
+
+        // Register TitleScreenScene
+        FXMLLoader titleScreenLoader = new FXMLLoader(getClass().getResource("titlescreen-view.fxml"));
+        Scene titleScreenScene = new Scene(titleScreenLoader.load());
+        TitleScreenController titleScreenController = titleScreenLoader.getController();
+        titleScreenController.setSceneManager(sceneManager);
+
+        sceneManager.registerScene("titleScreen", titleScreenScene);
+
+        // Register GameSetupScene
+        FXMLLoader gameSetupLoader = new FXMLLoader(getClass().getResource("game-setup-view.fxml"));
+        Scene gameSetupScene = new Scene(gameSetupLoader.load());
+        GameSetupController gameSetupController = gameSetupLoader.getController();
+        gameSetupController.setSceneManager(sceneManager);
+
+        sceneManager.registerScene("gameSetup", gameSetupScene);
+
+        // Register GameplayScene
+        FXMLLoader gameplayLoader = new FXMLLoader(getClass().getResource("gameplay-view.fxml"));
+        Scene gameplayScene = new Scene(gameplayLoader.load());
+        GameplayController gameplayController = gameplayLoader.getController();
+        gameplayController.setSceneManager(sceneManager);
+
+        sceneManager.registerScene("gameplay", gameplayScene);
+
+        // Register WinScreen
+        FXMLLoader winScreenLoader = new FXMLLoader(getClass().getResource("winscreen-view.fxml"));
+        Scene winScreenScene = new Scene(winScreenLoader.load());
+        WinScreenController winScreenController = winScreenLoader.getController();
+        winScreenController.setSceneManager(sceneManager);
+
+        sceneManager.registerScene("winScreen", winScreenScene);
+
+
+        //titleScreenLoader
+        //titleScreenScene
 
         stage.setTitle("Battleship");
-        stage.setScene(scene);
+        stage.setScene(titleScreenScene);
         stage.show();
     }
 

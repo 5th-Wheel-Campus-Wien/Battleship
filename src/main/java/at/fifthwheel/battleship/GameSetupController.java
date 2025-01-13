@@ -23,6 +23,12 @@ import java.util.Map;
 
 public class GameSetupController {
 
+    private SceneManager sceneManager;
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
     private final int GRID_SIZE = 10;
     private final int CELL_SIZE = 35;
     public Button btnRotateShip_P1;

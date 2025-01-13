@@ -11,6 +11,13 @@ import javafx.scene.control.*;
 
 
 public class PlayerNameController extends Application {
+
+    private SceneManager sceneManager;
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
     @Override
     public void start(Stage primaryStage) {
        primaryStage.setTitle("Battleship");

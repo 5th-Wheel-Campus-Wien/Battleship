@@ -14,15 +14,14 @@ public class TitleScreenController {
     @FXML
     private Button startButton;
 
+    private SceneManager sceneManager;
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
     @FXML
     protected void onStartButtonClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("game-setup-view.fxml"));
-        Parent gameView = loader.load();
-
-        // Get the current stage
-        Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-
-        // Set the new scene
-        currentStage.setScene(new Scene(gameView));
+        sceneManager.switchToScene("playerNameSelection");
     }
 }

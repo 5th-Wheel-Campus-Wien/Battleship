@@ -13,6 +13,12 @@ import java.util.Map;
 
 public class GameplayController {
 
+    private SceneManager sceneManager;
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
     private GameState gameState;
 
     private final int CELL_SIZE = 35;
@@ -27,6 +33,7 @@ public class GameplayController {
 
     private boolean isMultiplayer;
 
+    // woops, need 2 of those too
     private Map<Rectangle, Integer> cellIndex;
 
     @FXML

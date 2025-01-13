@@ -1,4 +1,4 @@
-module org.example.battleship {
+module at.fifthwheel.battleship {
     requires javafx.controls;
     requires javafx.fxml;
 

@@ -12,6 +12,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class WinScreenController {
+
+    private SceneManager sceneManager;
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
     @FXML
     private Button continueButton;
     @FXML
@@ -19,17 +26,10 @@ public class WinScreenController {
 
     @FXML
     protected void onContinueButtonClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("endscreen-view.fxml"));
-        Parent gameView = loader.load();
 
-        // Get the current stage
-        Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-
-        // Set the new scene
-        currentStage.setScene(new Scene(gameView));
     }
 
-    @FXML   // Display
+    @FXML   // Display Name of Player who won
     public void playerWin(String playerName) {
         winnerLabel.setText(playerName + " has won!");
     }
