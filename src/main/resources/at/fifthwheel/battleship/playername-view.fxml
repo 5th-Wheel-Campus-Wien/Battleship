@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="at.fifthwheel.battleship.PlayerNameController"
+      alignment="CENTER" spacing="10" prefWidth="600.0" prefHeight="400.0" padding="20">
+    <Label text="Welcome to Battleship" style="-fx-font-size: 20px; -fx-font-weight: bold" />
+
+    <RadioButton text="Single Player" fx:id="singlePlayerButton" />
+    <RadioButton text="Multi Player" fx:id="multiPlayerButton" />
+
+    <TextField fx:id="player1NameField" promptText="Player 1" />
+    <TextField fx:id="player2NameField" promptText="Player 2" disable="true" />
+
+    <Button text="Start" fx:id="startButton" style="-fx-font-size: 20px;" />
+</VBox>
+

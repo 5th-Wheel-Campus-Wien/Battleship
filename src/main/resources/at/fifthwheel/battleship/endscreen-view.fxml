@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="at.fifthwheel.battleship.EndScreenController"
+      prefHeight="400.0"
+      prefWidth="300.0"
+      alignment="CENTER"
+      spacing="20.0">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20" />
+    </padding>
+    <Label text ="Game Ended!" style="-fx-font-size: 25px; -fx-font-weight: bold;" />
+    <Button text="Start New Game" style="-fx-font-size: 15px;" />
+</VBox>

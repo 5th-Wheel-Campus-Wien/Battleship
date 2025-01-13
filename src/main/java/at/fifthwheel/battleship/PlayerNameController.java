@@ -10,7 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 
 
-public class SpielerNameController extends Application {
+public class PlayerNameController extends Application {
     @Override
     public void start(Stage primaryStage) {
        primaryStage.setTitle("Battleship");

@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class EndeController extends Application {
+public class EndScreenController extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
