@@ -62,7 +62,7 @@ public class PlayerNameController {
             gameState.getPlayer2().setName(player2Name);
         }
 
-        sceneManager.switchToScene("gameSetup");
+        sceneManager.switchToGameSetup();
     }
 
     private void showAlert(String title, String message) {
