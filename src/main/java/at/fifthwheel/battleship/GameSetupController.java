@@ -175,11 +175,10 @@ public class GameSetupController implements ConfigurableUI {
         Stage stage = (Stage) gameSetupGrid.getScene().getWindow();
         Scene scene = stage.getScene();
         double sceneWidth = scene.getWidth();
-        double sceneHeight = scene.getHeight();
 
-        gameSetupGrid.setLayoutX(sceneWidth / 2 - gameSetupGrid.getWidth() / 2);
+        gameSetupGrid.setLayoutX(sceneWidth / 2 - (CELL_SIZE * GRID_SIZE / 2));
         shipContainer.setLayoutX(gameSetupGrid.getLayoutX() - (CELL_SIZE * 3));
-        rotateButton.setLayoutX(sceneWidth / 2 - gameSetupGrid.getWidth() / 2);
+        rotateButton.setLayoutX(sceneWidth / 2 - (rotateButton.getWidth() / 2));
     }
 
 
@@ -426,7 +425,7 @@ public class GameSetupController implements ConfigurableUI {
 
         finishSetup();
 
-        if (isPlayer1Finished || isMultiplayer) {
+        if (isPlayer1Finished || !isMultiplayer) {
             sceneManager.switchToScene("gameplay");
         }
         else {
