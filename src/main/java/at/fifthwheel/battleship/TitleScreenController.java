@@ -22,6 +22,6 @@ public class TitleScreenController {
 
     @FXML
     protected void onStartButtonClick(ActionEvent event) throws IOException {
-        sceneManager.switchToScene("playerNameSelection");
+        sceneManager.switchToPlayerNameSelection();
     }
 }
