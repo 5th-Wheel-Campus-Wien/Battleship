@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -414,7 +415,7 @@ public class GameSetupController implements ConfigurableUI {
     }
 
     @FXML
-    private void continueToNextStep(ActionEvent event) {
+    private void continueToNextStep(ActionEvent event) throws IOException {
         Map<Rectangle, Ship> rectShipMap = isPlayer1Finished ? rectangleShipMapP2 : rectangleShipMapP1;
 
         for (Ship ship : rectShipMap.values()) {
@@ -427,7 +428,7 @@ public class GameSetupController implements ConfigurableUI {
         finishSetup();
 
         if (isPlayer1Finished || isMultiplayer) {
-            sceneManager.switchToScene("gameplay");
+            sceneManager.switchToGameplay();
         }
         else {
             isPlayer1Finished = true;
