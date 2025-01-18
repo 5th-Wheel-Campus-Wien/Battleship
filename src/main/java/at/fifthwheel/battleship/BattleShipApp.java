@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class BattleShipApp extends Application {
 
@@ -35,6 +36,7 @@ public class BattleShipApp extends Application {
         FXMLLoader gameSetupLoader = new FXMLLoader(getClass().getResource("game-setup-view.fxml"));
         Scene gameSetupScene = new Scene(gameSetupLoader.load());
         GameSetupController gameSetupController = gameSetupLoader.getController();
+        gameSetupScene.getRoot().setUserData(gameSetupLoader);
         gameSetupController.setSceneManager(sceneManager);
 
         sceneManager.registerScene("gameSetup", gameSetupScene);

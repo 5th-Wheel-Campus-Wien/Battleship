@@ -53,6 +53,16 @@ public class PlayerNameController {
             showAlert("Error!", "Player 2 Name is required");
             return;
         }
+
+        GameState gameState = sceneManager.getGameState();
+        gameState.setIsMultiPlayer(multiPlayerButton.isSelected());
+        gameState.getPlayer1().setName(player1Name);
+
+        if (multiPlayerButton.isSelected()) {
+            gameState.getPlayer2().setName(player2Name);
+        }
+
+        sceneManager.switchToScene("gameSetup");
     }
 
     private void showAlert(String title, String message) {

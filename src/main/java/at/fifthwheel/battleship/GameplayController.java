@@ -1,6 +1,5 @@
 package at.fifthwheel.battleship;
 
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
@@ -11,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameplayController {
+public class GameplayController implements ConfigurableUI {
 
     private SceneManager sceneManager;
 
@@ -21,12 +20,13 @@ public class GameplayController {
 
     private GameState gameState;
 
-    private final int CELL_SIZE = 35;
-    private final int GRID_SIZE = 10;
+    private final int CELL_SIZE = GameConfig.getCellSize();
+    private final int GRID_SIZE = GameConfig.getBoardSize();
+
     @FXML
-    private GridPane gameBoardGrid_P1;
+    private GridPane gameBoardGridP1;
     @FXML
-    private GridPane gameBoardGrid_P2;
+    private GridPane gameBoardGridP2;
 
     private ObservableList<Ship> shipsP1;
     private ObservableList<Ship> shipsP2;
@@ -36,20 +36,17 @@ public class GameplayController {
     // woops, need 2 of those too
     private Map<Rectangle, Integer> cellIndex;
 
+    private Player.PlayerSetupUI playerUIP1;
+    private Player.PlayerSetupUI playerUIP2;
+    private Player.PlayerSetupUI activePlayerUI;
+
     @FXML
-    private void initialize() {
+    @Override
+    public void configureUI() {
 
-        initialize(true);
 
-        if (isMultiplayer) {
-            initialize(false);
-        }
-
-    }
-
-    private void initialize(boolean isPlayer1) {
-        GridPane gameBoardGrid = isPlayer1 ? gameBoardGrid_P1 : gameBoardGrid_P2;
-        List<Ship> ships = isPlayer1 ? shipsP1 : shipsP2;
+        //GridPane gameBoardGrid = activePlayerUI.;
+        List<Ship> ships = activePlayerUI.getShips();
 
         cellIndex = new HashMap<>();
 
@@ -62,11 +59,24 @@ public class GameplayController {
                 cell.setStroke(Color.BLACK);  // Cell border
                 cell.setOnMouseClicked(event -> checkForHit(cell));
 
-                gameBoardGrid.add(cell, col, row);
+                //gameBoardGrid.add(cell, col, row);
                 cellIndex.put(cell, index);
                 index++;
             }
         }
+    }
+
+    private void initializePlayer1(){
+        activePlayerUI = playerUIP1;
+        initializeGameSetupElements();
+    }
+
+    private void initializePlayer2(){
+        activePlayerUI = playerUIP2;
+        initializeGameSetupElements();
+    }
+
+    private void initializeGameSetupElements() {
 
     }
 

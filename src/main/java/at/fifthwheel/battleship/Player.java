@@ -1,6 +1,5 @@
 package at.fifthwheel.battleship;
 
-import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -8,13 +7,17 @@ import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
 import java.util.Map;
+import java.util.List;
 
 public class Player {
-    private final String name;
+    private String name;
     private final boolean isP1;
 
     public String getName(){
         return name;
+    }
+    public void setName(String name){
+        this.name = name;
     }
     public boolean isP1(){
         return isP1;
@@ -27,22 +30,21 @@ public class Player {
 
 
 
-
-    public static class PlayerUI {
+    public static class PlayerSetupUI {
         private final Pane shipContainer;
         private final GridPane gameSetupGrid;
-        private final ObservableList<Ship> ships;
+        private final List<Ship> ships;
         private final Map<Rectangle, Ship> rectangleShipMap;
-        private final Map<Rectangle, Point> shipOrigins;
-        private final javafx.scene.control.Button btnRotateShip;
+        private final Map<Rectangle, Point> shipSetupOrigins;
+        private final javafx.scene.control.Button rotateShipButton;
 
-        public PlayerUI(Pane shipContainer, GridPane gameSetupGrid, ObservableList<Ship> ships, Map<Rectangle, Point> shipOrigins, Map<Rectangle, Ship> rectangleShipMap, javafx.scene.control.Button btnRotateShip) {
+        public PlayerSetupUI(Pane shipContainer, GridPane gameSetupGrid, List<Ship> ships, Map<Rectangle, Point> shipOrigins, Map<Rectangle, Ship> rectangleShipMap, javafx.scene.control.Button btnRotateShip) {
             this.shipContainer = shipContainer;
             this.gameSetupGrid = gameSetupGrid;
             this.ships = ships;
-            this.shipOrigins = shipOrigins;
+            this.shipSetupOrigins = shipOrigins;
             this.rectangleShipMap = rectangleShipMap;
-            this.btnRotateShip = btnRotateShip;
+            this.rotateShipButton = btnRotateShip;
         }
 
         public Pane getShipContainer() {
@@ -53,7 +55,7 @@ public class Player {
             return gameSetupGrid;
         }
 
-        public ObservableList<Ship> getShips() {
+        public List<Ship> getShips() {
             return ships;
         }
 
@@ -61,12 +63,12 @@ public class Player {
             return rectangleShipMap;
         }
 
-        public Map<Rectangle, Point> getShipOrigins() {
-            return shipOrigins;
+        public Map<Rectangle, Point> getShipSetupOrigins() {
+            return shipSetupOrigins;
         }
 
-        public Button getBtnRotateShip() {
-            return btnRotateShip;
+        public Button getRotateShipButton() {
+            return rotateShipButton;
         }
     }
 }

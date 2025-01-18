@@ -3,7 +3,6 @@ package at.fifthwheel.battleship;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class Ship {
@@ -32,6 +31,7 @@ public class Ship {
         this.length = new SimpleIntegerProperty(length);
         this.width = new SimpleIntegerProperty(width);
         this.boardIndices = new int[length * width];
+
         Arrays.fill(boardIndices, Integer.MIN_VALUE);
     }
 

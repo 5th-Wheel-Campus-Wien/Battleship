@@ -1,5 +1,7 @@
 package at.fifthwheel.battleship;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.HashMap;
@@ -10,8 +12,15 @@ public class SceneManager {
     private Map<String, Scene> scenes = new HashMap<>();
     private Map<String, Object> globalData = new HashMap<>();
 
+    private GameState gameState = new GameState();
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
     public SceneManager(Stage currentStage) {
         this.currentStage = currentStage;
+        this.globalData.put("gameState", gameState);
     }
 
     public void registerScene(String name, Scene scene) {
@@ -27,6 +36,19 @@ public class SceneManager {
         if (scene != null) {
             currentStage.setScene(scene);
             currentStage.show();
+
+            // Get the controller from the scene and call configureUI() if it exists
+            if (scene.getRoot() != null) {
+                FXMLLoader loader = (FXMLLoader) scene.getRoot().getUserData();
+                if (loader != null) {
+                    Object controller = loader.getController();
+                    if (controller instanceof ConfigurableUI) {
+                        // Call setup only after the scene is displayed
+                        ((ConfigurableUI) controller).configureUI();
+                    }
+                }
+            }
+
         } else {
             System.err.println("Scene not found: " + name);
         }

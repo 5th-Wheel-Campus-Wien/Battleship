@@ -10,38 +10,38 @@
             minHeight="720" minWidth="1280">
 
     <!-- Ship display area (left side) -->
-    <Pane fx:id="shipContainer_P1"
+    <Pane fx:id="shipContainerP1"
           layoutX="55">
     </Pane>
 
-    <GridPane fx:id="gameSetupGrid_P1" gridLinesVisible="true"
+    <GridPane fx:id="gameSetupGridP1" gridLinesVisible="true"
               layoutX="200.0"
               layoutY="160.0"
               viewOrder="1">
         <!-- The grid is dynamically populated in the controller -->
     </GridPane>
 
-    <Button fx:id="btnRotateShip_P1"
+    <Button fx:id="rotateShipPlayer1Button"
             text="Rotate"
             onAction="#rotateShip"/>
 
 
 
-    <Pane fx:id="shipContainer_P2">
+    <Pane fx:id="shipContainerP2">
     </Pane>
 
-    <GridPane fx:id="gameSetupGrid_P2" gridLinesVisible="true"
+    <GridPane fx:id="gameSetupGridP2" gridLinesVisible="true"
               layoutX="720.0"
               layoutY="160.0"
               viewOrder="1">
         <!-- The grid is dynamically populated in the controller -->
     </GridPane>
 
-    <Button fx:id="btnRotateShip_P2"
+    <Button fx:id="rotateShipPlayer2Button"
             text="Rotate"
             onAction="#rotateShip"/>
 
-    <Button fx:id="btnContinue"
+    <Button fx:id="continueButton"
             text="Weiter"
             onAction="#continueToNextStep"/>
 

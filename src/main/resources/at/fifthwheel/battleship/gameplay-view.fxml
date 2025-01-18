@@ -8,7 +8,7 @@
             prefHeight="720.0" prefWidth="1280.0">
 
 
-    <GridPane fx:id="gameBoardGrid_P1" gridLinesVisible="true"
+    <GridPane fx:id="gameBoardGridP1" gridLinesVisible="true"
               layoutX="200.0"
               layoutY="160.0"
               viewOrder="1">
@@ -16,7 +16,7 @@
     </GridPane>
 
 
-    <GridPane fx:id="gameBoardGrid_P2" gridLinesVisible="true"
+    <GridPane fx:id="gameBoardGridP2" gridLinesVisible="true"
               layoutX="720.0"
               layoutY="160.0"
               viewOrder="1">
