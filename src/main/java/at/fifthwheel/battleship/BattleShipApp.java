@@ -55,12 +55,18 @@ public class BattleShipApp extends Application {
 
         sceneManager.registerScene("winScreen", winScreenScene);
 
+        // Register ComputerScreen
+        FXMLLoader computerScreenLoader = new FXMLLoader(getClass().getResource("computer-setup-view.fxml"));
+        Scene computerScreenScene = new Scene(computerScreenLoader.load());
+        ComputerSetupController computerScreenController = computerScreenLoader.getController();
+        computerScreenController.setSceneManager(sceneManager);
+
 
         //titleScreenLoader
         //titleScreenScene
 
         stage.setTitle("Battleship");
-        stage.setScene(titleScreenScene);
+        stage.setScene(computerScreenScene);
         stage.show();
     }
 
