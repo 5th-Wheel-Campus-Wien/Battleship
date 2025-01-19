@@ -48,7 +48,7 @@ public abstract class GameSetupControllerBase {
 
         this.activePlayer = sceneManager.getGameState().getActivePlayer();
         this.gameSetupHelper = new GameSetupHelper(gameSetupGrid, shipContainer, shipRectToShipMap, shipOrigins, activePlayer);
-        ships = activePlayer.isP1() ? GameConfig.getShipsP1() : GameConfig.getShipsP2();
+        ships = activePlayer.getIsP1() ? GameConfig.getShipsP1() : GameConfig.getShipsP2();
 
         // Create grid cells
         for (int row = 0; row < GRID_SIZE; row++) {
@@ -144,7 +144,7 @@ public abstract class GameSetupControllerBase {
 
     boolean checkShipIndices(){
         for (Ship ship : shipRectToShipMap.values()) {
-            if (ship.boardIndices.stream().anyMatch(p -> p.x < 0 || p.y < 0)) {
+            if (ship.getBoardIndices().stream().anyMatch(p -> p.x < 0 || p.y < 0)) {
                 // TODO: Alert / Label unter Button "alle Schiffe müssen platziert sein" ausgeben ?
                 return false;
             }

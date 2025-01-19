@@ -17,9 +17,9 @@
                   <Image url="@../../../images/Battleship-titlescreen.png" />
                </image>
             </ImageView>
-            <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonClick" prefHeight="100.0" prefWidth="200.0" text="START" StackPane.alignment="BOTTOM_CENTER">
+            <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonClick" prefHeight="50.0" prefWidth="150.0" text="START" StackPane.alignment="BOTTOM_CENTER">
                <font>
-                  <Font size="48.0" />
+                  <Font size="30.0" />
                </font>
                <StackPane.margin>
                   <Insets bottom="10.0" />

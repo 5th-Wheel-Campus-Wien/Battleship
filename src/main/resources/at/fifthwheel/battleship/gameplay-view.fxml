@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -18,5 +19,11 @@
               viewOrder="1">
         <!-- The grid is dynamically populated in the controller -->
     </GridPane>
+
+    <Button fx:id="continueButton"
+            text="Weiter"
+            disable="true"
+            visible="false"
+            onAction="#continueToNextScene"/>
 
 </AnchorPane>

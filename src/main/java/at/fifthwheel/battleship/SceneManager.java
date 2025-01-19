@@ -106,6 +106,21 @@ public class SceneManager {
         }
     }
 
+    public void switchToWinScreen() {
+        try {
+            FXMLLoader winScreenLoader = new FXMLLoader(getClass().getResource("winscreen-view.fxml"));
+            Scene winScreenScene = new Scene(winScreenLoader.load());
+            WinScreenController winScreenController = winScreenLoader.getController();
+            winScreenController.setSceneManager(this);
+
+            currentStage.setScene(winScreenScene);
+            currentStage.show();
+        } catch (IOException e) {
+            System.err.println("Scene [winscreen] failed loading: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public void switchToEndScreen() {
         try {
             FXMLLoader endScreenLoader = new FXMLLoader(getClass().getResource("endscreen-view.fxml"));

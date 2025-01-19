@@ -85,9 +85,9 @@ public class ComputerSetupController {
                 for (int j = 0; j < shipWidth; j++) {
                     // Place ship into array
                     shipIDs[row + j][col + i] = shipLength;
-                    ship.boardIndices.set(i, new Point(col + i, row + j));
-                    int pX = ship.boardIndices.get(i).x;
-                    int pY = ship.boardIndices.get(i).y;
+                    ship.getBoardIndices().set(i, new Point(col + i, row + j));
+                    int pX = ship.getBoardIndices().get(i).x;
+                    int pY = ship.getBoardIndices().get(i).y;
                     System.out.println("x: " + pX + " y: " + pY);
                     // TODO Debugging (remove later)
                     Rectangle cell = getNodeByRowColumnIndex(row + j, col + i);
@@ -113,9 +113,9 @@ public class ComputerSetupController {
                 for (int j = 0; j < shipWidth; j++) {
                     // Place ship into array
                     shipIDs[row + i][col + j] = shipLength;
-                    ship.boardIndices.set(i, new Point(col + j, row + i));
-                    int pX = ship.boardIndices.get(i).x;
-                    int pY = ship.boardIndices.get(i).y;
+                    ship.getBoardIndices().set(i, new Point(col + j, row + i));
+                    int pX = ship.getBoardIndices().get(i).x;
+                    int pY = ship.getBoardIndices().get(i).y;
                     System.out.println("x: " + pX + " y: " + pY); // TODO Debugging (remove later)
                     // TODO Debugging (remove later)
                     Rectangle cell = getNodeByRowColumnIndex(row + i, col + j);

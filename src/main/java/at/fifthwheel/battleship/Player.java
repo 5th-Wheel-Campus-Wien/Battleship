@@ -1,6 +1,6 @@
 package at.fifthwheel.battleship;
 
-import java.util.Arrays;
+import java.awt.*;
 import java.util.List;
 
 public class Player {
@@ -8,12 +8,12 @@ public class Player {
     private final int BOARD_SIZE = GameConfig.getBoardSize();
 
     private String name;
-    private final boolean isP1;
+    private final boolean IS_P1;
 
     private final BoardSetupCell[][] boardSetupCells = new BoardSetupCell[BOARD_SIZE][BOARD_SIZE];
     private BoardCellPlay[][] boardCellsPlay = new BoardCellPlay[BOARD_SIZE][BOARD_SIZE];
 
-    public final List<Ship> ships;
+    private final List<Ship> SHIPS;
 
     public String getName(){
         return name;
@@ -21,8 +21,8 @@ public class Player {
     public void setName(String name){
         this.name = name;
     }
-    public boolean isP1(){
-        return isP1;
+    public boolean getIsP1(){
+        return IS_P1;
     }
 
     public BoardSetupCell[][] getBoardSetupCells(){
@@ -39,6 +39,17 @@ public class Player {
         return boardCellsPlay[x][y];
     }
 
+    public Point getBoardCellIndex(BoardCellPlay cell){
+        for (int i = 0; i < boardCellsPlay.length; i++) {
+            for (int j = 0; j < boardCellsPlay[i].length; j++) {
+                if (boardCellsPlay[i][j].equals(cell)) { // Use equals for object comparison
+                    return new Point(i, j); // Return the indices as a Point
+                }
+            }
+        }
+        return null;
+    }
+
     public void setBoardCellsPlay(BoardCell[][] boardCells){
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
@@ -48,12 +59,12 @@ public class Player {
     }
 
     public List<Ship> getShips(){
-        return ships;
+        return SHIPS;
     }
 
     public Player(String name, boolean isP1) {
         this.name = name;
-        this.isP1 = isP1;
+        this.IS_P1 = isP1;
 
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
@@ -61,7 +72,7 @@ public class Player {
             }
         }
 
-        ships = isP1 ? GameConfig.getShipsP1() : GameConfig.getShipsP2();
+        SHIPS = isP1 ? GameConfig.getShipsP1() : GameConfig.getShipsP2();
     }
 
 }
