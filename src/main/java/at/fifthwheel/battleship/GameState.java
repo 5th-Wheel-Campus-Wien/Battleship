@@ -31,15 +31,18 @@ public class GameState {
         activePlayer = activePlayer;
     }
 
-    public void switchActivePlayer() {
+    public Player switchActivePlayer() {
         if (activePlayer == null) {
             throw new IllegalStateException("No active player selected");
         }
         if (activePlayer.equals(player1)) {
             activePlayer = player2;
-            return;
+            System.out.println("Active player switched - isP1 = " + activePlayer.isP1());
+            return activePlayer;
         }
         activePlayer = player1;
+        System.out.println("Active player switched - isP1 = " + activePlayer.isP1());
+        return activePlayer;
     }
 
     public GameState() {

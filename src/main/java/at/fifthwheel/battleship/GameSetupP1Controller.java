@@ -4,15 +4,18 @@ public class GameSetupP1Controller extends GameSetupControllerBase {
 
     @Override
     void continueToNextScene() {
-        if (!checkShipIndices()){
+        if (!checkShipIndices()) {
             return;
         }
 
+        activePlayer.setBoardCellsPlay(activePlayer.getBoardSetupCells());
+
+
         if (sceneManager.getGameState().getIsMultiPlayer()) {
             sceneManager.getGameState().switchActivePlayer();
-            sceneManager.switchToGameplay();
-        } else {
             sceneManager.switchToP2Setup();
+        } else {
+            sceneManager.switchToGameplay();
         }
     }
 }

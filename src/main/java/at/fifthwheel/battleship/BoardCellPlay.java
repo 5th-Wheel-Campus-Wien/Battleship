@@ -19,5 +19,8 @@ public class BoardCellPlay extends BoardCell {
         this.hit.set(hit);
     }
 
+    public BoardCellPlay(boolean hasShip){
+        this.hasShip.set(hasShip);
+    }
 
 }

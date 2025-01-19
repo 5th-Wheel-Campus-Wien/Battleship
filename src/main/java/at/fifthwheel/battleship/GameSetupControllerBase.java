@@ -32,32 +32,34 @@ public abstract class GameSetupControllerBase {
     @FXML
     private Button continueButton;
 
-    private final List<Ship> ships = GameConfig.getShipsP1();
+    private List<Ship> ships;
     private final Map<Rectangle, Ship> shipRectToShipMap = new HashMap<>();
     private final Map<Rectangle, Point> shipOrigins = new HashMap<>();
 
     //private final Map<Rectangle, BoardSetupCell> rectangleBoardCellMap = new HashMap<>();
 
     private GameSetupHelper gameSetupHelper;
-    private Player activePlayer;
+
+    Player activePlayer;
 
 
     @FXML
     public void initializeUI() {
 
         this.activePlayer = sceneManager.getGameState().getActivePlayer();
-        this.gameSetupHelper = new GameSetupHelper(gameSetupGrid, shipContainer, rotateShipButton, continueButton, shipRectToShipMap, shipOrigins, activePlayer);
+        this.gameSetupHelper = new GameSetupHelper(gameSetupGrid, shipContainer, shipRectToShipMap, shipOrigins, activePlayer);
+        ships = activePlayer.isP1() ? GameConfig.getShipsP1() : GameConfig.getShipsP2();
 
         // Create grid cells
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
-                Rectangle cell = new Rectangle(CELL_SIZE, CELL_SIZE);
-                cell.setFill(javafx.scene.paint.Color.LIGHTBLUE); // Default water color
-                cell.setStroke(Color.BLACK);  // Cell border
+                Rectangle rect = new Rectangle(CELL_SIZE, CELL_SIZE);
+                rect.setFill(javafx.scene.paint.Color.LIGHTBLUE); // Default water color
+                rect.setStroke(Color.BLACK);  // Cell border
 
-                gameSetupGrid.add(cell, col, row);
+                gameSetupGrid.add(rect, col, row);
 
-                BoardSetupCell boardCell = activePlayer.getBoardSetupCell(row, col);
+                //BoardSetupCell boardCell = activePlayer.getBoardSetupCell(row, col);
                 //rectangleBoardCellMap.put(cell, boardCell);
             }
         }
@@ -85,12 +87,54 @@ public abstract class GameSetupControllerBase {
 
             shipContainer.getChildren().add(shipRect); // Add the rectangle to the container
 
-            gameSetupHelper.setDragAndDrop(shipRect);
+            setDragAndDrop(shipRect);
 
             shipOrigins.put(shipRect, new Point((int) shipRect.getLayoutX() - 2, (int) shipRect.getLayoutY() - 2));
         }
 
-        gameSetupHelper.positionUIElements();
+        positionUIElements();
+    }
+
+    public void setDragAndDrop(Rectangle shipRect) {
+        shipRect.setOnMousePressed(event -> {
+            // Save the initial position of the shipRect when dragging starts (relative to parent Pane)
+            double relativeShipX = shipRect.getLayoutX();
+            double relativeShipY = shipRect.getLayoutY();
+            double mouseOffsetX = event.getSceneX() - relativeShipX;
+            double mouseOffsetY = event.getSceneY() - relativeShipY;
+
+            // Set shipRect to front so it can be dragged in front of the game board
+            shipRect.toFront();
+
+            // Set up dragging behavior
+            shipRect.setOnMouseDragged(dragEvent -> {
+                shipRect.relocate(dragEvent.getSceneX() - mouseOffsetX, dragEvent.getSceneY() - mouseOffsetY);
+            });
+
+            // Handle mouse release to place the shipRect
+            shipRect.setOnMouseReleased(releaseEvent -> {
+                gameSetupHelper.placeShip(shipRect);
+            });
+        });
+    }
+
+    private void positionUIElements() {
+
+        double sceneWidth = gameSetupGrid.getScene().getWidth();
+        double sceneHeight = gameSetupGrid.getScene().getHeight();
+        double gridSize = CELL_SIZE * GRID_SIZE;
+
+        gameSetupGrid.setLayoutX(sceneWidth / 2 - gridSize / 2);
+        gameSetupGrid.setLayoutY(sceneHeight / 2 - gridSize / 2);
+
+        shipContainer.setLayoutX(gameSetupGrid.getLayoutX() - (CELL_SIZE * 3));
+        shipContainer.setLayoutY(gameSetupGrid.getLayoutY());
+
+        rotateShipButton.setLayoutX(sceneWidth / 2 - (rotateShipButton.getWidth() / 2));
+        rotateShipButton.setLayoutY(gameSetupGrid.getLayoutY() + gridSize + CELL_SIZE);
+
+        continueButton.setLayoutX(sceneWidth / 2 - continueButton.getWidth() / 2);
+        continueButton.setLayoutY(sceneHeight - sceneHeight / 8);
     }
 
     @FXML

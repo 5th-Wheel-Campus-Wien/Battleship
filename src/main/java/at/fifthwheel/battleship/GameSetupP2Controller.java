@@ -8,7 +8,10 @@ public class GameSetupP2Controller extends GameSetupControllerBase {
             return;
         }
 
+        activePlayer.setBoardCellsPlay(activePlayer.getBoardSetupCells());
+
         sceneManager.getGameState().switchActivePlayer();
+
         sceneManager.switchToGameplay();
     }
 

@@ -1,13 +1,11 @@
 package at.fifthwheel.battleship;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class GameplayController {
@@ -18,61 +16,88 @@ public class GameplayController {
         this.sceneManager = sceneManager;
     }
 
-    private GameState gameState;
-
     private final int CELL_SIZE = GameConfig.getCellSize();
     private final int GRID_SIZE = GameConfig.getBoardSize();
 
     @FXML
-    private GridPane gameBoardGridP1;
+    private GridPane gameGridP1;
     @FXML
-    private GridPane gameBoardGridP2;
+    private GridPane gameGridP2;
 
-    private ObservableList<Ship> shipsP1;
-    private ObservableList<Ship> shipsP2;
+    private final Map<Rectangle, BoardCellPlay> rectangleBoardCellMapP1 = new HashMap<>();
+    private final Map<Rectangle, BoardCellPlay> rectangleBoardCellMapP2 = new HashMap<>();
 
-    private boolean isMultiplayer;
-
-    // woops, need 2 of those too
-    private Map<Rectangle, Integer> cellIndex;
+    private Player activePlayer;
 
     @FXML
     public void initializeUI() {
 
+        GameState gameState = sceneManager.getGameState();
 
-        //GridPane gameBoardGrid = activePlayerUI.;
-        //List<Ship> ships = activePlayerUI.getShips();
+        activePlayer = sceneManager.getGameState().getActivePlayer();
 
-        cellIndex = new HashMap<>();
+        initializeUIP1();
+
+        if (gameState.getIsMultiPlayer()) {
+            activePlayer = gameState.switchActivePlayer();
+
+            initializeUIP2();
+
+            activePlayer = gameState.switchActivePlayer();
+        }
+        positionUIElements();
+    }
+
+    private void initializeUIP1() {
+        createGridCells(rectangleBoardCellMapP1);
+    }
+
+    private void initializeUIP2() {
+        createGridCells(rectangleBoardCellMapP2);
+    }
+
+    private void createGridCells(Map<Rectangle, BoardCellPlay> rectangleBoardCellMap) {
+
+        GridPane gameGridPane = activePlayer.isP1() ? gameGridP1 : gameGridP2;
 
         // Create grid cells
-        int index = 0;
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
-                Rectangle cell = new Rectangle(CELL_SIZE, CELL_SIZE);
-                cell.setFill(Color.LIGHTBLUE); // Default water color
-                cell.setStroke(Color.BLACK);  // Cell border
-                cell.setOnMouseClicked(event -> checkForHit(cell));
+                Rectangle rect = new Rectangle(CELL_SIZE, CELL_SIZE);
+                rect.setFill(Color.LIGHTBLUE); // Default water color
+                rect.setStroke(Color.BLACK);  // Cell border
+                rect.setOnMouseClicked(event -> checkForHit(rect));
 
-                //gameBoardGrid.add(cell, col, row);
-                cellIndex.put(cell, index);
-                index++;
+                rectangleBoardCellMap.put(rect, activePlayer.getBoardCellPlay(col, row));
+
+                gameGridPane.add(rect, col, row);
             }
         }
     }
 
-    private void initializePlayer1(){
-        //activePlayerUI = playerUIP1;
-        initializeGameSetupElements();
-    }
+    private void positionUIElements() {
+        double sceneWidth = gameGridP1.getScene().getWidth();
+        double sceneHeight = gameGridP1.getScene().getHeight();
+        double gridSize = CELL_SIZE * GRID_SIZE + 5;
 
-    private void initializePlayer2(){
-        //activePlayerUI = playerUIP2;
-        initializeGameSetupElements();
-    }
+        double gameGridLayoutY = sceneHeight / 2 - (gridSize / 2);
 
-    private void initializeGameSetupElements() {
+        if (sceneManager.getGameState().getIsMultiPlayer()) {
+            double borderToGridP1X = sceneWidth / 4 - gridSize / 2;
 
+            gameGridP1.setLayoutX(borderToGridP1X);
+            gameGridP1.setLayoutY(gameGridLayoutY);
+
+            gameGridP2.setLayoutX(sceneWidth - borderToGridP1X - gridSize - 5);
+            gameGridP2.setLayoutY(gameGridLayoutY);
+        }
+        else{
+            gameGridP1.setLayoutX(sceneWidth / 2 - gridSize / 2);
+            gameGridP1.setLayoutY(gameGridLayoutY);
+
+            gameGridP2.setDisable(true);
+            gameGridP2.setVisible(false);
+        }
     }
 
     private void checkForHit(Rectangle cell) {

@@ -1,5 +1,7 @@
 package at.fifthwheel.battleship;
 
+import java.util.Arrays;
+
 public class Player {
 
     private final int BOARD_SIZE = GameConfig.getBoardSize();
@@ -8,7 +10,7 @@ public class Player {
     private final boolean isP1;
 
     private final BoardSetupCell[][] boardSetupCells = new BoardSetupCell[BOARD_SIZE][BOARD_SIZE];
-    private final BoardCellPlay[][] boardCellsPlay = new BoardCellPlay[BOARD_SIZE][BOARD_SIZE];
+    private BoardCellPlay[][] boardCellsPlay = new BoardCellPlay[BOARD_SIZE][BOARD_SIZE];
 
     public String getName(){
         return name;
@@ -34,13 +36,20 @@ public class Player {
         return boardCellsPlay[x][y];
     }
 
+    public void setBoardCellsPlay(BoardCell[][] boardCells){
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                this.boardCellsPlay[row][col] = new BoardCellPlay(boardCells[row][col].getHasShip());
+            }
+        }
+    }
+
     public Player(String name, boolean isP1) {
         this.name = name;
         this.isP1 = isP1;
 
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                this.boardCellsPlay[row][col] = new BoardCellPlay();
                 this.boardSetupCells[row][col] = new BoardSetupCell();
             }
         }

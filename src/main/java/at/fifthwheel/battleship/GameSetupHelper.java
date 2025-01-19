@@ -19,8 +19,6 @@ public final class GameSetupHelper {
 
     private final GridPane gameSetupGrid;
     private final Pane shipContainer;
-    private final Button rotateShipButton;
-    private final Button continueButton;
 
     private Rectangle lastPlacedShipRect;
 
@@ -31,40 +29,21 @@ public final class GameSetupHelper {
     private final Player player;
 
 
-    public GameSetupHelper(GridPane gameSetupGrid, Pane shipContainer, Button rotateShipButton, Button continueButton, Map<Rectangle, Ship> shipRectanglesToShipMap, Map<Rectangle, Point> shipOrigins, Player player) {
+    public GameSetupHelper(GridPane gameSetupGrid, Pane shipContainer, Map<Rectangle, Ship> shipRectanglesToShipMap, Map<Rectangle, Point> shipOrigins, Player player) {
         this.gameSetupGrid = gameSetupGrid;
         this.shipContainer = shipContainer;
-        this.rotateShipButton = rotateShipButton;
-        this.continueButton = continueButton;
         this.shipRectanglesToShipMap = shipRectanglesToShipMap;
         this.shipOrigins = shipOrigins;
         this.player = player;
     }
 
-    public void positionUIElements() {
-
-        double sceneWidth = gameSetupGrid.getScene().getWidth();
-        double sceneHeight = gameSetupGrid.getScene().getHeight();
-
-        gameSetupGrid.setLayoutX(sceneWidth / 2 - ((double) CELL_SIZE * GRID_SIZE / 2));
-        gameSetupGrid.setLayoutY(sceneHeight / 2 - ((double) CELL_SIZE * GRID_SIZE / 2));
-
-        shipContainer.setLayoutX(gameSetupGrid.getLayoutX() - (CELL_SIZE * 3));
-        shipContainer.setLayoutY(gameSetupGrid.getLayoutY());
-
-        rotateShipButton.setLayoutX(sceneWidth / 2 - (rotateShipButton.getWidth() / 2));
-        rotateShipButton.setLayoutY(gameSetupGrid.getLayoutY() + CELL_SIZE * GRID_SIZE + CELL_SIZE);
-
-        continueButton.setLayoutX(sceneWidth / 2 - continueButton.getWidth() / 2);
-        continueButton.setLayoutY(sceneHeight - sceneHeight / 8);
-    }
 
     public static boolean areRectanglesOverlapping(Rectangle rect1, Rectangle rect2) {
         if (rect1.equals(rect2)) {
             return false;
         }
 
-        double tolerance = 9.0;
+        double tolerance = GameConfig.getCellSize() / 4.0;
 
         // Get the bounds of both rectangles
         Bounds bounds1 = rect1.getBoundsInParent();
@@ -87,29 +66,6 @@ public final class GameSetupHelper {
 
         // Check if the smaller bounds intersect
         return expandedBounds1.intersects(expandedBounds2);
-    }
-
-    public void setDragAndDrop(Rectangle shipRect) {
-        shipRect.setOnMousePressed(event -> {
-            // Save the initial position of the shipRect when dragging starts (relative to parent Pane)
-            double relativeShipX = shipRect.getLayoutX();
-            double relativeShipY = shipRect.getLayoutY();
-            double mouseOffsetX = event.getSceneX() - relativeShipX;
-            double mouseOffsetY = event.getSceneY() - relativeShipY;
-
-            // Set shipRect to front so it can be dragged in front of the game board
-            shipRect.toFront();
-
-            // Set up dragging behavior
-            shipRect.setOnMouseDragged(dragEvent -> {
-                shipRect.relocate(dragEvent.getSceneX() - mouseOffsetX, dragEvent.getSceneY() - mouseOffsetY);
-            });
-
-            // Handle mouse release to place the shipRect
-            shipRect.setOnMouseReleased(releaseEvent -> {
-                placeShip(shipRect);
-            });
-        });
     }
 
     private int snapToGrid(Rectangle shipRect) {
@@ -142,13 +98,13 @@ public final class GameSetupHelper {
         return gridIndex;
     }
 
-    private boolean isValidPlacement(Rectangle ship) {
-        var shipPositionScene = new Point((int) ship.localToScene(0, 0).getX(), (int) ship.localToScene(0, 0).getY());
+    private boolean isValidPlacement(Rectangle shipRect) {
+        var shipRectPositionScene = new Point((int) shipRect.localToScene(0, 0).getX(), (int) shipRect.localToScene(0, 0).getY());
 
-        if (shipPositionScene.x < (gameSetupGrid.getLayoutX() - CELL_SIZE / 4)
-                || shipPositionScene.y < (gameSetupGrid.getLayoutY() - CELL_SIZE / 4)
-                || shipPositionScene.x > (gameSetupGrid.getLayoutX() + gameSetupGrid.getWidth() - ship.widthProperty().get() + CELL_SIZE / 4)
-                || shipPositionScene.y > (gameSetupGrid.getLayoutY() + gameSetupGrid.getHeight() - ship.heightProperty().get() + CELL_SIZE / 4)) {
+        if (shipRectPositionScene.x < (gameSetupGrid.getLayoutX() - CELL_SIZE / 4)
+                || shipRectPositionScene.y < (gameSetupGrid.getLayoutY() - CELL_SIZE / 4)
+                || shipRectPositionScene.x > (gameSetupGrid.getLayoutX() + gameSetupGrid.getWidth() - shipRect.widthProperty().get() + CELL_SIZE / 4)
+                || shipRectPositionScene.y > (gameSetupGrid.getLayoutY() + gameSetupGrid.getHeight() - shipRect.heightProperty().get() + CELL_SIZE / 4)) {
 
             return false;
         }
@@ -157,7 +113,7 @@ public final class GameSetupHelper {
             if (!(node instanceof Rectangle)) {
                 continue;
             }
-            if (GameSetupHelper.areRectanglesOverlapping(ship, (Rectangle) node)) {
+            if (GameSetupHelper.areRectanglesOverlapping(shipRect, (Rectangle) node)) {
                 return false;
             }
         }
