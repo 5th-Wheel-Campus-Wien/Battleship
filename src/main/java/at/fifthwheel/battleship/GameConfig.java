@@ -20,6 +20,8 @@ public final class GameConfig {
 
     private static final List<Ship> shipsP2 = List.copyOf(ships);
 
+    private static final List<Ship> shipsComputer = List.copyOf(ships);
+
     public static int getCellSize(){
         return CELL_SIZE;
     }
@@ -33,6 +35,7 @@ public final class GameConfig {
     public static List<Ship> getShipsP2(){
         return shipsP2;
     }
+    public static List<Ship> getShipsComputer(){ return shipsComputer; }
 
     private GameConfig(){
     }

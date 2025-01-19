@@ -63,7 +63,7 @@ public class SceneManager {
             currentStage.show();
         } catch (IOException e) {
             System.err.println("Scene [titleScreen] failed loading: " + e.getMessage());
-            e.printStackTrace(); // Optionally log the stack trace for debugging
+            e.printStackTrace();
         }
     }
 

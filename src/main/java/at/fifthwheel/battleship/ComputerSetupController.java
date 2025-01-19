@@ -5,6 +5,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.util.List;
+
 public class ComputerSetupController {
 
     private SceneManager sceneManager;
@@ -16,24 +18,125 @@ public class ComputerSetupController {
     @FXML
     private GridPane grid;
 
-    private int GRID_SIZE = 10;
-    private int CELL_SIZE = 35;
+    private static final List<Ship> shipsComputer = GameConfig.getShipsComputer();
+    private static final int GRID_SIZE = GameConfig.getBoardSize();
+    private static final int CELL_SIZE = GameConfig.getCellSize();
 
     private int[][] shipIDs = new int[GRID_SIZE][GRID_SIZE];
 
     @FXML
     private void initialize(){
 
+        // Create the Computer Grid
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
-                shipIDs[row][col] = -1;
+                shipIDs[row][col] = 0;
                 Rectangle cell = new Rectangle(CELL_SIZE, CELL_SIZE);
-                cell.setFill(Color.LIGHTBLUE); // Default water color
-                cell.setStroke(Color.BLACK);  // Cell border
+                cell.setFill(Color.LIGHTBLUE);
+                cell.setStroke(Color.BLACK);
 
                 grid.add(cell, col, row);
             }
         }
+
+        placeShipsRandom();
+        printShipGrid();    // Debugging (remove later)
+    }
+
+    // Place ships on the Grid randomly
+    private void placeShipsRandom(){
+        for (Ship ship : shipsComputer) {
+            boolean shipPlaced = false;
+
+            // Look for suitable Start position
+            while(!shipPlaced){
+                int row = (int) (Math.random() * GRID_SIZE);
+                int col = (int) (Math.random() * GRID_SIZE);
+                boolean rotated = Math.random() > 0.5;
+
+                shipPlaced = tryPlaceShip(ship, row, col, rotated); // Try to place the Ship at Start position
+                System.out.println("Row: " + row + " Col: " + col + " Rotated: " + rotated); // Debugging (remove later)
+            }
+
+            System.out.println("Ship placed: " + ship.getLength()); // Debugging (remove later)
+        }
+    }
+
+    // Validate start Position and place the ship
+    private boolean tryPlaceShip(Ship ship, int row, int col, boolean rotated){
+        int shipLength = ship.getLength();
+        int shipWidth = ship.getWidth();
+
+        if(rotated){
+            // Check for Out of Bounds
+            if(col + shipLength > GRID_SIZE){
+                return false;
+            }
+            for (int i = 0; i < shipLength; i++) {
+                for (int j = 0; j < shipWidth; j++) {
+                    // Check for Overlap
+                    if(shipIDs[row + j][col + i] != 0){
+                        return false;
+                    }
+                }
+            }
+            for (int i = 0; i < shipLength; i++) {
+                for (int j = 0; j < shipWidth; j++) {
+                    // Place ship into array
+                    shipIDs[row + j][col + i] = shipLength;
+                    // Debugging (remove later)
+                    Rectangle cell = getNodeByRowColumnIndex(row + j, col + i);
+                    if (cell != null){
+                        cell.setFill(Color.GRAY);
+                    }
+                }
+            }
+        } else {
+            // Check for Out of Bounds
+            if(row + shipLength > GRID_SIZE){
+                return false;
+            }
+            for (int i = 0; i < shipLength; i++) {
+                for (int j = 0; j < shipWidth; j++) {
+                    // Check for Overlap
+                    if(shipIDs[row + i][col + j] != 0){
+                        return false;
+                    }
+                }
+            }
+            for (int i = 0; i < shipLength; i++) {
+                for (int j = 0; j < shipWidth; j++) {
+                    // Place ship into array
+                    shipIDs[row + i][col + j] = shipLength;
+                    // Debugging (remove later)
+                    Rectangle cell = getNodeByRowColumnIndex(row + i, col + j);
+                    if (cell != null){
+                        cell.setFill(Color.GRAY);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    // Debugging: print Grid of placed Ships
+    private void printShipGrid() {
+        for (int[] row : shipIDs) {
+            for (int cell : row) {
+                System.out.print(cell + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // Debugging: Get current Grid Cell
+    private Rectangle getNodeByRowColumnIndex(int row, int col) {
+        for (javafx.scene.Node node : grid.getChildren()) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+                return (Rectangle) node;
+            }
+        }
+        return null;
     }
 
 }
