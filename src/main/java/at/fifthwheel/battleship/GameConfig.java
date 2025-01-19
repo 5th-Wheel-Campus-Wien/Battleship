@@ -2,6 +2,7 @@ package at.fifthwheel.battleship;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class GameConfig {
 
@@ -16,11 +17,17 @@ public final class GameConfig {
             new Ship(2, 1)
     );
 
-    private static final List<Ship> shipsP1 = List.copyOf(ships);
+    private static final List<Ship> shipsP1 = ships.stream()
+            .map(ship -> new Ship(ship.getLength(), ship.getWidth()))
+            .collect(Collectors.toList());
 
-    private static final List<Ship> shipsP2 = List.copyOf(ships);
+    private static final List<Ship> shipsP2 = ships.stream()
+            .map(ship -> new Ship(ship.getLength(), ship.getWidth()))
+            .collect(Collectors.toList());
 
-    private static final List<Ship> shipsComputer = List.copyOf(ships);
+    private static final List<Ship> shipsComputer = ships.stream()
+            .map(ship -> new Ship(ship.getLength(), ship.getWidth()))
+            .collect(Collectors.toList());
 
     public static int getCellSize(){
         return CELL_SIZE;

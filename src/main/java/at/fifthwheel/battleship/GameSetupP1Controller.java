@@ -8,7 +8,7 @@ public class GameSetupP1Controller extends GameSetupControllerBase {
             return;
         }
 
-        activePlayer.setBoardCellsPlay(activePlayer.getBoardSetupCells());
+        player.setBoardCellsPlay(player.getBoardSetupCells());
 
 
         if (sceneManager.getGameState().getIsMultiPlayer()) {

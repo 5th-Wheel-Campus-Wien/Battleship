@@ -40,15 +40,17 @@ public abstract class GameSetupControllerBase {
 
     private GameSetupHelper gameSetupHelper;
 
-    Player activePlayer;
+    Player player;
+
+    private Rectangle currentlyDraggedShipRect;
 
 
     @FXML
     public void initializeUI() {
 
-        this.activePlayer = sceneManager.getGameState().getActivePlayer();
-        this.gameSetupHelper = new GameSetupHelper(gameSetupGrid, shipContainer, shipRectToShipMap, shipOrigins, activePlayer);
-        ships = activePlayer.getIsP1() ? GameConfig.getShipsP1() : GameConfig.getShipsP2();
+        this.player = sceneManager.getGameState().getActivePlayer();
+        this.gameSetupHelper = new GameSetupHelper(gameSetupGrid, shipContainer, shipRectToShipMap, shipOrigins, player);
+        ships = player.getShips();
 
         // Create grid cells
         for (int row = 0; row < GRID_SIZE; row++) {
@@ -96,25 +98,51 @@ public abstract class GameSetupControllerBase {
     }
 
     public void setDragAndDrop(Rectangle shipRect) {
+//        shipRect.setOnMousePressed(event -> {
+//            // Save the initial position of the shipRect when dragging starts (relative to parent Pane)
+//            double relativeShipX = shipRect.getLayoutX();
+//            double relativeShipY = shipRect.getLayoutY();
+//            double mouseOffsetX = event.getSceneX() - relativeShipX;
+//            double mouseOffsetY = event.getSceneY() - relativeShipY;
+//            currentlyDraggedShipRect = shipRect;
+//
+//            // Set shipRect to front so it can be dragged in front of the game board
+//            shipRect.toFront();
+//
+//            // Set up dragging behavior
+//            shipRect.setOnMouseDragged(dragEvent -> {
+//                shipRect.relocate(dragEvent.getSceneX() - mouseOffsetX, dragEvent.getSceneY() - mouseOffsetY);
+//            });
+//
+//            // Handle mouse release to place the shipRect
+//            shipRect.setOnMouseReleased(releaseEvent -> {
+//                if (currentlyDraggedShipRect == shipRect) {
+//                    gameSetupHelper.placeShip(shipRect);    // TODO: Verursacht wahrscheinlich den "nochmal drauf klicken" Bug beim platzieren
+//                }
+//            });
+//        });
+
         shipRect.setOnMousePressed(event -> {
-            // Save the initial position of the shipRect when dragging starts (relative to parent Pane)
+            // Save initial position and offsets
             double relativeShipX = shipRect.getLayoutX();
             double relativeShipY = shipRect.getLayoutY();
             double mouseOffsetX = event.getSceneX() - relativeShipX;
             double mouseOffsetY = event.getSceneY() - relativeShipY;
+            currentlyDraggedShipRect = shipRect;
 
-            // Set shipRect to front so it can be dragged in front of the game board
             shipRect.toFront();
+            shipRect.setUserData(new double[]{mouseOffsetX, mouseOffsetY}); // Save offset in user data
+        });
 
-            // Set up dragging behavior
-            shipRect.setOnMouseDragged(dragEvent -> {
-                shipRect.relocate(dragEvent.getSceneX() - mouseOffsetX, dragEvent.getSceneY() - mouseOffsetY);
-            });
+        shipRect.setOnMouseDragged(dragEvent -> {
+            double[] offsets = (double[]) shipRect.getUserData();
+            shipRect.relocate(dragEvent.getSceneX() - offsets[0], dragEvent.getSceneY() - offsets[1]);
+        });
 
-            // Handle mouse release to place the shipRect
-            shipRect.setOnMouseReleased(releaseEvent -> {
+        shipRect.setOnMouseReleased(releaseEvent -> {
+            if (currentlyDraggedShipRect == shipRect) {
                 gameSetupHelper.placeShip(shipRect);    // TODO: Verursacht wahrscheinlich den "nochmal drauf klicken" Bug beim platzieren
-            });
+            }
         });
     }
 
@@ -138,11 +166,11 @@ public abstract class GameSetupControllerBase {
     }
 
     @FXML
-    private void rotateShip(){
+    private void rotateShip() {
         gameSetupHelper.rotateShip();
     }
 
-    boolean checkShipIndices(){
+    boolean checkShipIndices() {
         for (Ship ship : shipRectToShipMap.values()) {
             if (ship.getBoardIndices().stream().anyMatch(p -> p.x < 0 || p.y < 0)) {
                 // TODO: Alert / Label unter Button "alle Schiffe müssen platziert sein" ausgeben ?

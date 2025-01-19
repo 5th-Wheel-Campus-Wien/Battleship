@@ -39,7 +39,7 @@ public final class GameSetupHelper {
 
 
     public static boolean areRectanglesOverlapping(Rectangle rect1, Rectangle rect2) {
-        if (rect1.equals(rect2)) {
+        if (rect1 == rect2) {
             return false;
         }
 
@@ -131,21 +131,29 @@ public final class GameSetupHelper {
         lastPlacedShipRect.setHeight(origWidth);
         lastPlacedShipRect.setWidth(origHeight);
 
-        // remove old indices from boardCells
+        placeShip(lastPlacedShipRect);
+    }
+
+    private void removePrevIndices(){
+        if (lastPlacedShipRect == null){
+            return;
+        }
+        // remove previous indices from boardCells
         Ship ship = shipRectanglesToShipMap.get(lastPlacedShipRect);
         for (Point p : ship.getBoardIndices()) {
-            player.getBoardSetupCell(p.x, p.y).setHasShip(false);
+            if (p.x >= 0 && p.y >= 0){
+                player.getBoardSetupCell(p.x, p.y).setHasShip(false);
+            }
         }
-
-        placeShip(lastPlacedShipRect);
     }
 
     public boolean placeShip(Rectangle shipRect) {
 
         if (isValidPlacement(shipRect)) {
-            int gridPaneRectIndex = snapToGrid(shipRect);
-            setShipIndices(gridPaneRectIndex);
+            int gridPaneIndex = snapToGrid(shipRect);
+            setShipIndices(gridPaneIndex);
             return true;
+
         } else {
 
             shipRect.relocate(shipOrigins.get(shipRect).x, shipOrigins.get(shipRect).y);
@@ -167,6 +175,8 @@ public final class GameSetupHelper {
         }
 
         Ship ship = shipRectanglesToShipMap.get(lastPlacedShipRect);
+
+        removePrevIndices();
 
         if (firstIndex < 0) {
             for (Point p : ship.getBoardIndices()) {
