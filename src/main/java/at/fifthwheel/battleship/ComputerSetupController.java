@@ -5,6 +5,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 import java.util.List;
 
 public class ComputerSetupController {
@@ -27,7 +28,7 @@ public class ComputerSetupController {
     @FXML
     private void initialize(){
 
-        // Create the Computer Grid
+        // Create the Computer Grid (remove later)
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
                 shipIDs[row][col] = 0;
@@ -40,7 +41,7 @@ public class ComputerSetupController {
         }
 
         placeShipsRandom();
-        printShipGrid();    // Debugging (remove later)
+        printShipGrid();    // TODO Debugging (remove later)
     }
 
     // Place ships on the Grid randomly
@@ -55,10 +56,10 @@ public class ComputerSetupController {
                 boolean rotated = Math.random() > 0.5;
 
                 shipPlaced = tryPlaceShip(ship, row, col, rotated); // Try to place the Ship at Start position
-                System.out.println("Row: " + row + " Col: " + col + " Rotated: " + rotated); // Debugging (remove later)
+                System.out.println("Row: " + row + " Col: " + col + " Rotated: " + rotated); // TODO Debugging (remove later)
             }
 
-            System.out.println("Ship placed: " + ship.getLength()); // Debugging (remove later)
+            System.out.println("Ship placed: " + ship.getLength()); // TODO Debugging (remove later)
         }
     }
 
@@ -84,7 +85,11 @@ public class ComputerSetupController {
                 for (int j = 0; j < shipWidth; j++) {
                     // Place ship into array
                     shipIDs[row + j][col + i] = shipLength;
-                    // Debugging (remove later)
+                    ship.boardIndices.set(i, new Point(col + i, row + j));
+                    int pX = ship.boardIndices.get(i).x;
+                    int pY = ship.boardIndices.get(i).y;
+                    System.out.println("x: " + pX + " y: " + pY);
+                    // TODO Debugging (remove later)
                     Rectangle cell = getNodeByRowColumnIndex(row + j, col + i);
                     if (cell != null){
                         cell.setFill(Color.GRAY);
@@ -108,7 +113,11 @@ public class ComputerSetupController {
                 for (int j = 0; j < shipWidth; j++) {
                     // Place ship into array
                     shipIDs[row + i][col + j] = shipLength;
-                    // Debugging (remove later)
+                    ship.boardIndices.set(i, new Point(col + j, row + i));
+                    int pX = ship.boardIndices.get(i).x;
+                    int pY = ship.boardIndices.get(i).y;
+                    System.out.println("x: " + pX + " y: " + pY); // TODO Debugging (remove later)
+                    // TODO Debugging (remove later)
                     Rectangle cell = getNodeByRowColumnIndex(row + i, col + j);
                     if (cell != null){
                         cell.setFill(Color.GRAY);
@@ -119,7 +128,7 @@ public class ComputerSetupController {
         return true;
     }
 
-    // Debugging: print Grid of placed Ships
+    // TODO Debugging: print Grid of placed Ships
     private void printShipGrid() {
         for (int[] row : shipIDs) {
             for (int cell : row) {
@@ -129,7 +138,7 @@ public class ComputerSetupController {
         }
     }
 
-    // Debugging: Get current Grid Cell
+    // TODO Debugging: Get current Grid Cell
     private Rectangle getNodeByRowColumnIndex(int row, int col) {
         for (javafx.scene.Node node : grid.getChildren()) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
