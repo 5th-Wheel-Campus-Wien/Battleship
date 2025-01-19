@@ -131,6 +131,12 @@ public final class GameSetupHelper {
         lastPlacedShipRect.setHeight(origWidth);
         lastPlacedShipRect.setWidth(origHeight);
 
+        // remove old indices from boardCells
+        Ship ship = shipRectanglesToShipMap.get(lastPlacedShipRect);
+        for (Point p : ship.getBoardIndices()) {
+            player.getBoardSetupCell(p.x, p.y).setHasShip(false);
+        }
+
         placeShip(lastPlacedShipRect);
     }
 
@@ -164,9 +170,7 @@ public final class GameSetupHelper {
 
         if (firstIndex < 0) {
             for (Point p : ship.getBoardIndices()) {
-                System.out.println("Cell with index " + p.x + ", " + p.y + " has ship: " + player.getBoardSetupCell(p.x, p.y).getHasShip());
                 player.getBoardSetupCell(p.x, p.y).setHasShip(false);
-                System.out.println("Cell with index " + p.x + ", " + p.y + " has ship: " + player.getBoardSetupCell(p.x, p.y).getHasShip());
                 p.x = Integer.MIN_VALUE;
                 p.y = Integer.MIN_VALUE;
             }
@@ -189,9 +193,6 @@ public final class GameSetupHelper {
             }
             player.getBoardSetupCell(x, y).setHasShip(true);
         }
-        for (Point p : ship.getBoardIndices()) {
-            System.out.println("new ship indices (x, y): " + p.x + ", " + p.y);
-            System.out.println("Cell with index " + p.x + ", " + p.y + " has ship: " + player.getBoardSetupCell(p.x, p.y).getHasShip());
-        }
+
     }
 }

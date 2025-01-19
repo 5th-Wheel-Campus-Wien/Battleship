@@ -71,16 +71,17 @@ public class GameplayController {
 
                 rect.setOnMouseClicked(event -> {
                     if (checkForHit(rect)) {
-                        checkIfWon(rect);
-                        sceneManager.getGameState().switchActivePlayer();
+                        checkIfWon();
+                        activePlayer = sceneManager.getGameState().switchActivePlayer();
                         switchActivePlayerUI();
                     }
                 });
 
                 rectangleBoardCellMap.put(rect, activePlayer.getBoardCellPlay(col, row));
 
-                BoardCellPlay cell = activePlayer.getBoardCellPlay(col, row);
-                System.out.println("cell has ship: " + cell.hasShip);
+                if(rectangleBoardCellMap.get(rect).getHasShip()){
+                    rect.setFill(Color.GREY);
+                }
 
                 gameGridPane.add(rect, col, row);
             }
@@ -102,6 +103,8 @@ public class GameplayController {
 
             gameGridP2.setLayoutX(sceneWidth - borderToGridP1X - gridSize - 5);
             gameGridP2.setLayoutY(gameGridLayoutY);
+
+            gameGridP1.setDisable(true);
         } else {
             gameGridP1.setLayoutX(sceneWidth / 2 - gridSize / 2);
             gameGridP1.setLayoutY(gameGridLayoutY);
@@ -115,7 +118,7 @@ public class GameplayController {
     }
 
     private boolean checkForHit(Rectangle rect) {
-        Map<Rectangle, BoardCellPlay> rectCellMap = activePlayer.getIsP1() ? rectangleBoardCellMapP1 : rectangleBoardCellMapP2;
+        Map<Rectangle, BoardCellPlay> rectCellMap = activePlayer.getIsP1() ? rectangleBoardCellMapP2 : rectangleBoardCellMapP1;
 
         BoardCellPlay cell = rectCellMap.get(rect);
 
@@ -123,16 +126,19 @@ public class GameplayController {
             return false;
         }
 
-        cell.setHit(true);
-
         Point point = activePlayer.getBoardCellIndex(cell);
+        if (point == null) {
+            return false;
+        }
+
+        cell.setHit(true);
 
         Color color = Color.DARKGREEN;
 
         List<Ship> ships = activePlayer.getShips();
         for (Ship ship : ships) {
             for (Point p : ship.getBoardIndices()) {
-                if (p == point) {
+                if (p.x == point.x && p.y == point.y) {
                     ship.incrementHitCount();
                     color = Color.RED;
                 }
@@ -144,11 +150,16 @@ public class GameplayController {
     }
 
     private void switchActivePlayerUI() {
-        gameGridP1.setDisable(activePlayer.getIsP1());
-        gameGridP2.setDisable(activePlayer.getIsP1());
+        System.out.println("before switchActivePlayerUI: GridP1 disabled: " + gameGridP1.isDisabled());
+        System.out.println("before switchActivePlayerUI: GridP2 disabled: " + gameGridP2.isDisabled());
+        System.out.println();
+        gameGridP1.setDisable(!gameGridP1.isDisabled());
+        gameGridP2.setDisable(!gameGridP2.isDisabled());
+        System.out.println("after switchActivePlayerUI: GridP1 disabled: " + gameGridP1.isDisabled());
+        System.out.println("after switchActivePlayerUI: GridP2 disabled: " + gameGridP2.isDisabled());
     }
 
-    private void checkIfWon(Rectangle rect){
+    private void checkIfWon(){
         List<Ship> ships = activePlayer.getShips();
 
         for (Ship ship : ships) {
