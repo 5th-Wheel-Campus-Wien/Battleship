@@ -47,6 +47,10 @@ public class Player {
         }
     }
 
+    public List<Ship> getShips(){
+        return ships;
+    }
+
     public Player(String name, boolean isP1) {
         this.name = name;
         this.isP1 = isP1;
