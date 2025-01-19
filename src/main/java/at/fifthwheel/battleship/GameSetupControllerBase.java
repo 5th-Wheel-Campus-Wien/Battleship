@@ -113,7 +113,7 @@ public abstract class GameSetupControllerBase {
 
             // Handle mouse release to place the shipRect
             shipRect.setOnMouseReleased(releaseEvent -> {
-                gameSetupHelper.placeShip(shipRect);
+                gameSetupHelper.placeShip(shipRect);    // TODO: Verursacht wahrscheinlich den "nochmal drauf klicken" Bug beim platzieren
             });
         });
     }
@@ -144,10 +144,9 @@ public abstract class GameSetupControllerBase {
 
     boolean checkShipIndices(){
         for (Ship ship : shipRectToShipMap.values()) {
-            System.out.println("First two Ship board indices: " + ship.getBoardIndices().get(0) + ", " + ship.getBoardIndices().get(1));
             if (ship.getBoardIndices().stream().anyMatch(p -> p.x < 0 || p.y < 0)) {
                 // TODO: Alert / Label unter Button "alle Schiffe müssen platziert sein" ausgeben ?
-                System.out.println("Ship Length: " + ship.getLength() + ", Indices: " + ship.getBoardIndices() + " is not placed!");
+                System.out.println("Ship Length: " + ship.getLength() + ", Indices: " + ship.getBoardIndices() + " is not placed!"); // TODO Debugging (remove later)
                 return false;
             }
         }
