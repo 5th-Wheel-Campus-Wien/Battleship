@@ -71,6 +71,7 @@ public class GameplayController {
 
                 rect.setOnMouseClicked(event -> {
                     if (checkForHit(rect)) {
+                        System.out.println("active player clicked: " + activePlayer.getName());
                         checkIfWon(rect);
                         sceneManager.getGameState().switchActivePlayer();
                         switchActivePlayerUI();
@@ -140,6 +141,7 @@ public class GameplayController {
         }
 
         rect.setFill(color);
+        System.out.println("active player checkhit: " + activePlayer.getName());
         return true;
     }
 

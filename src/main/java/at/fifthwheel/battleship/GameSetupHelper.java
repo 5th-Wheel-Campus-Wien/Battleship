@@ -149,7 +149,7 @@ public final class GameSetupHelper {
                 shipRect.setHeight(origWidth);
                 shipRect.setWidth(origHeight);
             }
-            setShipIndices(Integer.MIN_VALUE);
+            setShipIndices(Integer.MIN_VALUE);  // TODO: Verursacht wahrscheinlich den "nochmal drauf klicken" Bug beim platzieren
             lastPlacedShipRect = null;
             return false;
         }
@@ -190,7 +190,7 @@ public final class GameSetupHelper {
             player.getBoardSetupCell(x, y).setHasShip(true);
         }
         for (Point p : ship.getBoardIndices()) {
-            System.out.println("new ship indices (x, y): " + p.x + ", " + p.y);
+            System.out.println("new ship " + ship.getLength() + " indices (x, y): " + p.x + ", " + p.y);
             System.out.println("Cell with index " + p.x + ", " + p.y + " has ship: " + player.getBoardSetupCell(p.x, p.y).getHasShip());
         }
     }
