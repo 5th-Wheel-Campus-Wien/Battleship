@@ -35,6 +35,7 @@ public class GameplayController {
     private final Map<Rectangle, BoardCellPlay> rectangleBoardCellMapP2 = new HashMap<>();
 
     private Player activePlayer;
+    private Player inActivePlayer;
 
     @FXML
     public void initializeUI() {
@@ -120,13 +121,15 @@ public class GameplayController {
     private boolean checkForHit(Rectangle rect) {
         Map<Rectangle, BoardCellPlay> rectCellMap = activePlayer.getIsP1() ? rectangleBoardCellMapP2 : rectangleBoardCellMapP1;
 
+        inActivePlayer = sceneManager.getGameState().getPlayer1() == activePlayer ? sceneManager.getGameState().getPlayer2() : sceneManager.getGameState().getPlayer1();
+
         BoardCellPlay cell = rectCellMap.get(rect);
 
         if (cell == null || cell.getHit()) {
             return false;
         }
 
-        Point point = activePlayer.getBoardCellIndex(cell);
+        Point point = inActivePlayer.getBoardCellIndex(cell);
         if (point == null) {
             return false;
         }
@@ -135,7 +138,7 @@ public class GameplayController {
 
         Color color = Color.DARKGREEN;
 
-        List<Ship> ships = activePlayer.getShips();
+        List<Ship> ships = inActivePlayer.getShips();
         for (Ship ship : ships) {
             for (Point p : ship.getBoardIndices()) {
                 if (p.x == point.x && p.y == point.y) {
@@ -150,17 +153,12 @@ public class GameplayController {
     }
 
     private void switchActivePlayerUI() {
-        System.out.println("before switchActivePlayerUI: GridP1 disabled: " + gameGridP1.isDisabled());
-        System.out.println("before switchActivePlayerUI: GridP2 disabled: " + gameGridP2.isDisabled());
-        System.out.println();
         gameGridP1.setDisable(!gameGridP1.isDisabled());
         gameGridP2.setDisable(!gameGridP2.isDisabled());
-        System.out.println("after switchActivePlayerUI: GridP1 disabled: " + gameGridP1.isDisabled());
-        System.out.println("after switchActivePlayerUI: GridP2 disabled: " + gameGridP2.isDisabled());
     }
 
     private void checkIfWon(){
-        List<Ship> ships = activePlayer.getShips();
+        List<Ship> ships = inActivePlayer.getShips();
 
         for (Ship ship : ships) {
             if (!ship.getIsSunk()){
