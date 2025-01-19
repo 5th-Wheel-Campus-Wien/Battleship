@@ -1,6 +1,7 @@
 package at.fifthwheel.battleship;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Player {
 
@@ -11,6 +12,8 @@ public class Player {
 
     private final BoardSetupCell[][] boardSetupCells = new BoardSetupCell[BOARD_SIZE][BOARD_SIZE];
     private BoardCellPlay[][] boardCellsPlay = new BoardCellPlay[BOARD_SIZE][BOARD_SIZE];
+
+    public final List<Ship> ships;
 
     public String getName(){
         return name;
@@ -53,6 +56,8 @@ public class Player {
                 this.boardSetupCells[row][col] = new BoardSetupCell();
             }
         }
+
+        ships = isP1 ? GameConfig.getShipsP1() : GameConfig.getShipsP2();
     }
 
 }
