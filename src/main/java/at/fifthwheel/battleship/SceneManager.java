@@ -17,38 +17,14 @@ public class SceneManager {
     public GameState getGameState() {
         return gameState;
     }
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
 
     public SceneManager(Stage currentStage) {
         this.currentStage = currentStage;
-        this.globalData.put("gameState", gameState);
     }
 
-    /**
-     * Find the corresponding registered .fxml file associated with the name
-     * and sets the current Stage to that scene.
-     */
-//    public void switchToScene(String name) {
-//        Scene scene = scenes.get(name);
-//        if (scene != null) {
-//            currentStage.setScene(scene);
-//            currentStage.show();
-//
-//            // Get the controller from the scene and call configureUI() if it exists
-//            if (scene.getRoot() != null) {
-//                FXMLLoader loader = (FXMLLoader) scene.getRoot().getUserData();
-//                if (loader != null) {
-//                    Object controller = loader.getController();
-//                    if (controller instanceof ConfigurableUI) {
-//                        // Call setup only after the scene is displayed
-//                        ((ConfigurableUI) controller).configureUI();
-//                    }
-//                }
-//            }
-//
-//        } else {
-//            System.err.println("Scene not found: " + name);
-//        }
-//    }
 
     // Scene switching Methods
 
@@ -82,15 +58,31 @@ public class SceneManager {
         }
     }
 
-    public void switchToGameSetup() {
+    public void switchToP1Setup() {
         try {
-            FXMLLoader gameSetupLoader = new FXMLLoader(getClass().getResource("game-setup-view.fxml"));
+            FXMLLoader gameSetupLoader = new FXMLLoader(getClass().getResource("game-setup-P1-view.fxml"));
             Scene gameSetupScene = new Scene(gameSetupLoader.load());
-            GameSetupController gameSetupController = gameSetupLoader.getController();
-            gameSetupScene.getRoot().setUserData(gameSetupLoader);
-            gameSetupController.setSceneManager(this);
+            GameSetupP1Controller gameSetupP1Controller = gameSetupLoader.getController();
+            gameSetupP1Controller.setSceneManager(this);
 
             currentStage.setScene(gameSetupScene);
+            gameSetupP1Controller.initializeUI();
+            currentStage.show();
+        } catch (IOException e) {
+            System.err.println("Scene [gameSetup] failed loading: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void switchToP2Setup() {
+        try {
+            FXMLLoader gameSetupLoader = new FXMLLoader(getClass().getResource("game-setup-P2-view.fxml"));
+            Scene gameSetupP2Scene = new Scene(gameSetupLoader.load());
+            GameSetupP2Controller gameSetupP2Controller = gameSetupLoader.getController();
+            gameSetupP2Controller.setSceneManager(this);
+
+            currentStage.setScene(gameSetupP2Scene);
+            gameSetupP2Controller.initializeUI();
             currentStage.show();
         } catch (IOException e) {
             System.err.println("Scene [gameSetup] failed loading: " + e.getMessage());
@@ -106,6 +98,7 @@ public class SceneManager {
             gameplayController.setSceneManager(this);
 
             currentStage.setScene(gameplayScene);
+            gameplayController.initializeUI();
             currentStage.show();
         } catch (IOException e) {
             System.err.println("Scene [gameplay] failed loading: " + e.getMessage());

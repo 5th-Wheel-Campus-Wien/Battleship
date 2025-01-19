@@ -11,7 +11,7 @@ public abstract class BoardCell {
         return hasShip;
     }
 
-    public boolean hasShip() {
+    public boolean getHasShip() {
         return hasShip.get();
     }
 

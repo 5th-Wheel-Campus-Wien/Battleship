@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fifthwheel.battleship.PlayerNameController">
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fifthwheel.battleship.PlayerNameController">
     <Label text="Welcome to Battleship!">
       <font>
          <Font size="48.0" />
       </font></Label>
 
-    <RadioButton fx:id="singlePlayerButton" text="Single Player">
+    <RadioButton fx:id="singlePlayerButton" text="Single Player" selected="true">
       <font>
          <Font size="18.0" />
       </font></RadioButton>

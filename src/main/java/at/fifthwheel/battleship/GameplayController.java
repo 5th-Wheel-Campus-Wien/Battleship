@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameplayController implements ConfigurableUI {
+public class GameplayController {
 
     private SceneManager sceneManager;
 
@@ -36,17 +36,12 @@ public class GameplayController implements ConfigurableUI {
     // woops, need 2 of those too
     private Map<Rectangle, Integer> cellIndex;
 
-    private Player.PlayerSetupUI playerUIP1;
-    private Player.PlayerSetupUI playerUIP2;
-    private Player.PlayerSetupUI activePlayerUI;
-
     @FXML
-    @Override
-    public void configureUI() {
+    public void initializeUI() {
 
 
         //GridPane gameBoardGrid = activePlayerUI.;
-        List<Ship> ships = activePlayerUI.getShips();
+        //List<Ship> ships = activePlayerUI.getShips();
 
         cellIndex = new HashMap<>();
 
@@ -67,12 +62,12 @@ public class GameplayController implements ConfigurableUI {
     }
 
     private void initializePlayer1(){
-        activePlayerUI = playerUIP1;
+        //activePlayerUI = playerUIP1;
         initializeGameSetupElements();
     }
 
     private void initializePlayer2(){
-        activePlayerUI = playerUIP2;
+        //activePlayerUI = playerUIP2;
         initializeGameSetupElements();
     }
 
@@ -81,16 +76,7 @@ public class GameplayController implements ConfigurableUI {
     }
 
     private void checkForHit(Rectangle cell) {
-        for (Ship ship : shipsP1) {
-            for (int i : ship.boardIndices){
-                if (cellIndex.get(cell) == i){
-                    cell.setFill(Color.RED);
-                }
-                else{
-                    cell.setFill(Color.GREEN);
-                }
-            }
-        }
+
     }
 
 }

@@ -3,7 +3,7 @@ package at.fifthwheel.battleship;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public class BoardCellForPlay extends BoardCell {
+public class BoardCellPlay extends BoardCell {
 
     private final BooleanProperty hit = new SimpleBooleanProperty(false);
 
