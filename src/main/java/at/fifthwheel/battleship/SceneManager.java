@@ -114,6 +114,7 @@ public class SceneManager {
             winScreenController.setSceneManager(this);
 
             currentStage.setScene(winScreenScene);
+            winScreenController.initializeUI();
             currentStage.show();
         } catch (IOException e) {
             System.err.println("Scene [winscreen] failed loading: " + e.getMessage());

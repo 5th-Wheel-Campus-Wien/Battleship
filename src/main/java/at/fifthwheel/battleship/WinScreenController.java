@@ -20,13 +20,14 @@ public class WinScreenController {
     @FXML
     private Label winnerLabel;
 
+    public void initializeUI(){
+        String name = sceneManager.getGameState().getActivePlayer().getName();
+        winnerLabel.setText(name + " has won!");
+    }
+
     @FXML
     protected void onContinueButtonClick(ActionEvent event) throws IOException {
 
     }
 
-    @FXML   // Display Name of Player who won
-    public void playerWin(String playerName) {
-        winnerLabel.setText(playerName + " has won!");
-    }
 }

@@ -12,7 +12,7 @@
    <children>
       <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0">
          <children>
-            <Label fx:id="winnerLabel" alignment="CENTER" text="{Player} has won!">
+            <Label fx:id="winnerLabel" alignment="CENTER">
                <font>
                   <Font size="48.0" />
                </font>

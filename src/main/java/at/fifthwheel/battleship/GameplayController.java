@@ -72,7 +72,9 @@ public class GameplayController {
 
                 rect.setOnMouseClicked(event -> {
                     if (checkForHit(rect)) {
-                        checkIfWon();
+                        if (checkIfWon()){
+                            return;
+                        }
                         activePlayer = sceneManager.getGameState().switchActivePlayer();
                         switchActivePlayerUI();
                     }
@@ -153,19 +155,16 @@ public class GameplayController {
     }
 
     private void switchActivePlayerUI() {
-        if (gameGridP1.isDisabled() && gameGridP2.isDisabled()){
-            return;
-        }
         gameGridP1.setDisable(!gameGridP1.isDisabled());
         gameGridP2.setDisable(!gameGridP2.isDisabled());
     }
 
-    private void checkIfWon(){
+    private boolean checkIfWon(){
         List<Ship> ships = inactivePlayer.getShips();
 
         for (Ship ship : ships) {
             if (!ship.isSunk()){
-                return;
+                return false;
             }
         }
 
@@ -174,6 +173,8 @@ public class GameplayController {
 
         continueButton.setDisable(false);
         continueButton.setVisible(true);
+
+        return true;
     }
 
     @FXML
