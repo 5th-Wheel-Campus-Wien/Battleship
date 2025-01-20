@@ -13,22 +13,16 @@ public class Ship {
     private final IntegerProperty width;
 
     private int hitCount;
-    private boolean isSunk;
-
-    public int getHitCount() {
-        return hitCount;
-    }
 
     public void incrementHitCount() {
-        if (hitCount == length.get()) {
-            isSunk = true;
+        if (isSunk()) {
             return;
         }
-            hitCount++;
+        hitCount++;
     }
 
-    public boolean getIsSunk() {
-        return isSunk;
+    public boolean isSunk() {
+        return hitCount >= length.get();
     }
 
     public IntegerProperty lengthProperty() {

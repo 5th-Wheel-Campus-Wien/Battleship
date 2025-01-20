@@ -35,7 +35,7 @@ public class GameplayController {
     private final Map<Rectangle, BoardCellPlay> rectangleBoardCellMapP2 = new HashMap<>();
 
     private Player activePlayer;
-    private Player inActivePlayer;
+    private Player inactivePlayer;
 
     @FXML
     public void initializeUI() {
@@ -121,7 +121,7 @@ public class GameplayController {
     private boolean checkForHit(Rectangle rect) {
         Map<Rectangle, BoardCellPlay> rectCellMap = activePlayer.getIsP1() ? rectangleBoardCellMapP2 : rectangleBoardCellMapP1;
 
-        inActivePlayer = sceneManager.getGameState().getPlayer1() == activePlayer ? sceneManager.getGameState().getPlayer2() : sceneManager.getGameState().getPlayer1();
+        inactivePlayer = sceneManager.getGameState().getPlayer1() == activePlayer ? sceneManager.getGameState().getPlayer2() : sceneManager.getGameState().getPlayer1();
 
         BoardCellPlay cell = rectCellMap.get(rect);
 
@@ -129,7 +129,7 @@ public class GameplayController {
             return false;
         }
 
-        Point point = inActivePlayer.getBoardCellIndex(cell);
+        Point point = inactivePlayer.getBoardCellIndex(cell);
         if (point == null) {
             return false;
         }
@@ -138,7 +138,7 @@ public class GameplayController {
 
         Color color = Color.DARKGREEN;
 
-        List<Ship> ships = inActivePlayer.getShips();
+        List<Ship> ships = inactivePlayer.getShips();
         for (Ship ship : ships) {
             for (Point p : ship.getBoardIndices()) {
                 if (p.x == point.x && p.y == point.y) {
@@ -153,15 +153,18 @@ public class GameplayController {
     }
 
     private void switchActivePlayerUI() {
+        if (gameGridP1.isDisabled() && gameGridP2.isDisabled()){
+            return;
+        }
         gameGridP1.setDisable(!gameGridP1.isDisabled());
         gameGridP2.setDisable(!gameGridP2.isDisabled());
     }
 
     private void checkIfWon(){
-        List<Ship> ships = inActivePlayer.getShips();
+        List<Ship> ships = inactivePlayer.getShips();
 
         for (Ship ship : ships) {
-            if (!ship.getIsSunk()){
+            if (!ship.isSunk()){
                 return;
             }
         }
