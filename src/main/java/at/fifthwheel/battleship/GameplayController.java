@@ -12,7 +12,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.effect.ColorAdjust;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,16 +55,13 @@ public class GameplayController {
         GameState gameState = sceneManager.getGameState();
 
         activePlayer = sceneManager.getGameState().getActivePlayer();
-
         createGridCells();
 
-        if (gameState.getIsMultiPlayer() || true) { // TODO Debugging - remove "true"
-            activePlayer = gameState.switchActivePlayer();
+        activePlayer = gameState.switchActivePlayer();
+        createGridCells();
 
-            createGridCells();
+        activePlayer = gameState.switchActivePlayer();
 
-            activePlayer = gameState.switchActivePlayer();
-        }
         positionUIElements();
     }
 
@@ -89,10 +85,6 @@ public class GameplayController {
 
                 rectangleBoardCellMap.put(rect, activePlayer.getBoardCellPlay(col, row));
 
-//                if (rectangleBoardCellMap.get(rect).getShip() != null) {
-//                   rect.setFill(Color.GREY);
-//                }
-
                 gameGridPane.add(rect, col, row);
             }
         }
@@ -105,27 +97,29 @@ public class GameplayController {
 
         double gameGridLayoutY = sceneHeight / 2 - (gridSize / 2);
 
-        if (sceneManager.getGameState().getIsMultiPlayer() || true) { // TODO remove "true"
-            double borderToGridP1X = sceneWidth / 4 - gridSize / 2;
+        double borderToGridP1X = sceneWidth / 4 - gridSize / 2;
 
-            gameGridP1.setLayoutX(borderToGridP1X);
-            gameGridP1.setLayoutY(gameGridLayoutY);
+        gameGridP1.setLayoutX(borderToGridP1X);
+        gameGridP1.setLayoutY(gameGridLayoutY);
 
-            gameGridP2.setLayoutX(sceneWidth - borderToGridP1X - gridSize - 5);
-            gameGridP2.setLayoutY(gameGridLayoutY);
+        gameGridP2.setLayoutX(sceneWidth - borderToGridP1X - gridSize - 5);
+        gameGridP2.setLayoutY(gameGridLayoutY);
 
-            gameGridP1.setDisable(true);
-            gameGridP1.setEffect(grayscale);
-        } else {
-            gameGridP2.setLayoutX(sceneWidth / 2 - gridSize / 2);
-            gameGridP2.setLayoutY(gameGridLayoutY);
+        gameGridP1.setDisable(true);
+        gameGridP1.setEffect(grayscale);
 
-            gameGridP1.setDisable(true);
-            gameGridP1.setVisible(false);
+        if (!sceneManager.getGameState().getIsMultiPlayer()){
+            for (Node node : gameGridP1.getChildren()) {
+                if (!(node instanceof Rectangle)) {
+                    continue;
+                }
+                Rectangle rect = (Rectangle) node;
+                if (rectangleBoardCellMapP1.get(rect).hasShip()) {
+                    rect.setFill(Color.GREY);
+                }
+            }
         }
 
-//        continueButton.setLayoutX(sceneWidth / 2);
-//        continueButton.setLayoutY(sceneHeight - sceneHeight / 8);
     }
 
     private boolean checkForHit(Rectangle rect) {
@@ -149,13 +143,13 @@ public class GameplayController {
             color = Color.RED;
         }
 
-        FillTransition fillCell = new FillTransition(Duration.seconds(0.25), rect);
+        FillTransition fillCell = new FillTransition(Duration.seconds(0.75), rect);
         fillCell.setToValue(color);
         fillCell.setCycleCount(1);
         fillCell.setAutoReverse(false);
 
         fillCell.play();
-        //rect.setFill(color);
+
         return true;
     }
 

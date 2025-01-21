@@ -10,9 +10,9 @@ public final class GameConfig {
     private static final int BOARD_SIZE = 10;
 
     private static final List<Ship> ships = List.of(
-//            new Ship(5, 1),
-//            new Ship(4, 1),
-//            new Ship(3, 1),
+            new Ship(5, 1),
+            new Ship(4, 1),
+            new Ship(3, 1),
             new Ship(3, 1),
             new Ship(2, 1)
     );

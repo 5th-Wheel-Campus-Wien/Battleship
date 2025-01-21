@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,14 @@ public class ComputerSetupController {
 
     }
 
+    /**
+     *
+     * @param ship
+     * @param row
+     * @param col
+     * @param rotated
+     * @return
+     */
     // Validate start Position and place the ship
     private boolean tryPlaceShip(Ship ship, int row, int col, boolean rotated) {
         int shipLength = ship.getLength();
@@ -104,14 +113,14 @@ public class ComputerSetupController {
 //                    int pY = ship.getBoardCellsSetup()[i].getY();
 //                    System.out.println("x: " + pX + " y: " + pY);
                     // TODO Debugging (remove later)
-                    Rectangle cell = getNodeByRowColumnIndex(row + j, col + i);
-                    if (cell != null) {
-                        cell.setFill(Color.GRAY);
+                    Rectangle rect = getNodeByRowColumnIndex(row + j, col + i);
+                    if (rect != null) {
+                        rect.setFill(Color.GRAY);
 
-                        BoardCellSetup cellSetup = rectangleBoardCellSetupMap.get(cell);
-                        cellSetup.setShip(ship);
-                        ship.getBoardCellsSetup()[i] = cellSetup;
-                        ship.getBoardCellsSetup()[i].setShip(ship);
+                        BoardCellSetup cell = rectangleBoardCellSetupMap.get(rect);
+                        cell.setShip(ship);
+                        ship.getBoardCellsSetup()[i] = cell;
+                        System.out.println("Setup-cell: X: " + cell.getX() + " Y: " + cell.getY());
                     }
                 }
             }
@@ -137,17 +146,20 @@ public class ComputerSetupController {
 //                    int pY = ship.getBoardCellsSetup()[i].getY();
 //                    System.out.println("x: " + pX + " y: " + pY); // TODO Debugging (remove later)
                     // TODO Debugging (remove later)
-                    Rectangle cell = getNodeByRowColumnIndex(row + i, col + j);
-                    if (cell != null) {
-                        cell.setFill(Color.GRAY);
+                    Rectangle rect = getNodeByRowColumnIndex(row + i, col + j);
+                    if (rect != null) {
+                        rect.setFill(Color.GRAY);
 
-                        BoardCellSetup cellSetup = rectangleBoardCellSetupMap.get(cell);
-                        cellSetup.setShip(ship);
-                        ship.getBoardCellsSetup()[i] = cellSetup;
-                        ship.getBoardCellsSetup()[i].setShip(ship);
+                        BoardCellSetup cell = rectangleBoardCellSetupMap.get(rect);
+                        cell.setShip(ship);
+                        ship.getBoardCellsSetup()[i] = cell;
+                        System.out.println("Setup-cell: X: " + cell.getX() + " Y: " + cell.getY());
                     }
                 }
             }
+        }
+        for (BoardCellSetup cell : ship.getBoardCellsSetup()){
+            System.out.println("Ship - cells: X: " + cell.getX() + " Y: " + cell.getY());
         }
         return true;
     }
@@ -163,9 +175,12 @@ public class ComputerSetupController {
     }
 
     // TODO Debugging: Get current Grid Cell
-    private Rectangle getNodeByRowColumnIndex(int row, int col) {
+    private Rectangle getNodeByRowColumnIndex(int y, int x) {
         for (javafx.scene.Node node : grid.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+            if (!(node instanceof Rectangle)) {
+                continue;
+            }
+            if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
                 return (Rectangle) node;
             }
         }

@@ -75,8 +75,8 @@ public abstract class GameSetupControllerBase {
             Rectangle shipRect = new Rectangle();
             shipRectToShipMap.put(shipRect, ship);
 
-            shipRect.widthProperty().set(ship.getWidth() * CELL_SIZE); // Adjusting for grid size
-            shipRect.heightProperty().set(ship.getLength() * CELL_SIZE);
+            shipRect.widthProperty().bind(ship.widthProperty().multiply(CELL_SIZE)); // Adjusting for grid size
+            shipRect.heightProperty().bind(ship.lengthProperty().multiply(CELL_SIZE));
 
             shipRect.setStyle("-fx-fill: gray; -fx-stroke: #7090c0; -fx-stroke-width: 3");
 

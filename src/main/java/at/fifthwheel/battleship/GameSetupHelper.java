@@ -125,10 +125,12 @@ public final class GameSetupHelper {
             return;
         }
 
-        double origHeight = lastPlacedShipRect.getHeight();
-        double origWidth = lastPlacedShipRect.getWidth();
-        lastPlacedShipRect.setHeight(origWidth);
-        lastPlacedShipRect.setWidth(origHeight);
+        Ship ship = shipRectanglesToShipMap.get(lastPlacedShipRect);
+        int origHeight = ship.getLength();
+        int origWidth = ship.getWidth();
+
+        ship.setLength(origWidth);
+        ship.setWidth(origHeight);
 
         placeShip(lastPlacedShipRect);
     }
@@ -136,6 +138,7 @@ public final class GameSetupHelper {
     public boolean placeShip(Rectangle shipRect) {
 
         if (isValidPlacement(shipRect)) {
+
             int gridPaneIndex = snapToGrid(shipRect);
             setShipIndices(gridPaneIndex);
             return true;
@@ -144,10 +147,7 @@ public final class GameSetupHelper {
 
             shipRect.relocate(shipOrigins.get(shipRect).x, shipOrigins.get(shipRect).y);
             if (shipRect.getWidth() > shipRect.getHeight()) {
-                double origHeight = shipRect.getHeight();
-                double origWidth = shipRect.getWidth();
-                shipRect.setHeight(origWidth);
-                shipRect.setWidth(origHeight);
+                rotateShip();
             }
             setShipIndices(Integer.MIN_VALUE);
             lastPlacedShipRect = null;
