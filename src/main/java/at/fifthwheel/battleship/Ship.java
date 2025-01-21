@@ -21,6 +21,10 @@ public class Ship {
         hitCount++;
     }
 
+    public void resetHitCount() {
+        hitCount = 0;
+    }
+
     public boolean isSunk() {
         return hitCount >= length.get();
     }

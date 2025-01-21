@@ -7,8 +7,6 @@ import javafx.scene.control.Button;
 import java.io.IOException;
 
 public class TitleScreenController {
-    @FXML
-    private Button startButton;
 
     private SceneManager sceneManager;
 

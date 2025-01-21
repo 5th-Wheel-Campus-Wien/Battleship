@@ -16,7 +16,8 @@
          <Font size="48.0" />
       </font></Label>
    <Region prefHeight="400.0" prefWidth="1240.0" />
-    <Button text="Start New Game">
+    <Button text="Start New Game"
+            onAction="#onNewGameButtonClicked">
       <font>
          <Font size="24.0" />
       </font></Button>

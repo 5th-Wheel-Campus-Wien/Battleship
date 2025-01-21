@@ -95,9 +95,9 @@ public class GameplayController {
 
                 rectangleBoardCellMap.put(rect, activePlayer.getBoardCellPlay(col, row));
 
-                if(rectangleBoardCellMap.get(rect).getHasShip()){
-                    rect.setFill(Color.GREY);
-                }
+//                if(rectangleBoardCellMap.get(rect).getHasShip()){
+//                    rect.setFill(Color.GREY);
+//                }
 
                 gameGridPane.add(rect, col, row);
             }
