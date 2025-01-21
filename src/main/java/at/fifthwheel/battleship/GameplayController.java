@@ -3,6 +3,7 @@ package at.fifthwheel.battleship;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -30,6 +31,8 @@ public class GameplayController {
     private GridPane gameGridP2;
     @FXML
     private Button continueButton;
+    @FXML
+    private Label winnerLabel;
 
     private final Map<Rectangle, BoardCellPlay> rectangleBoardCellMapP1 = new HashMap<>();
     private final Map<Rectangle, BoardCellPlay> rectangleBoardCellMapP2 = new HashMap<>();
@@ -116,8 +119,8 @@ public class GameplayController {
             gameGridP2.setVisible(false);
         }
 
-        continueButton.setLayoutX(sceneWidth / 2);
-        continueButton.setLayoutY(sceneHeight - sceneHeight / 8);
+//        continueButton.setLayoutX(sceneWidth / 2);
+//        continueButton.setLayoutY(sceneHeight - sceneHeight / 8);
     }
 
     private boolean checkForHit(Rectangle rect) {
@@ -159,6 +162,7 @@ public class GameplayController {
         gameGridP2.setDisable(!gameGridP2.isDisabled());
     }
 
+    @FXML
     private boolean checkIfWon(){
         List<Ship> ships = inactivePlayer.getShips();
 
@@ -174,11 +178,15 @@ public class GameplayController {
         continueButton.setDisable(false);
         continueButton.setVisible(true);
 
+        String winnerName = sceneManager.getGameState().getActivePlayer().getName();
+        winnerLabel.setText(winnerName + " has won!");
+        winnerLabel.setVisible(true);
+
         return true;
     }
 
     @FXML
     private void continueToNextScene(ActionEvent actionEvent) {
-        sceneManager.switchToWinScreen();
+        sceneManager.switchToEndScreen();
     }
 }
