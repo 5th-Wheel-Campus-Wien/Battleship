@@ -4,6 +4,7 @@ module at.fifthwheel.battleship {
 
     requires com.almasb.fxgl.all;
     requires java.desktop;
+    requires org.slf4j;
 
     opens at.fifthwheel.battleship to javafx.fxml;
     exports at.fifthwheel.battleship;
