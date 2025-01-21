@@ -1,12 +1,16 @@
 package at.fifthwheel.battleship;
 
+import javafx.animation.FillTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.effect.ColorAdjust;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -31,12 +35,20 @@ public class GameplayController {
     private GridPane gameGridP2;
     @FXML
     private Button continueButton;
+    @FXML
+    private Label winnerLabel;
 
     private final Map<Rectangle, BoardCellPlay> rectangleBoardCellMapP1 = new HashMap<>();
     private final Map<Rectangle, BoardCellPlay> rectangleBoardCellMapP2 = new HashMap<>();
 
     private Player activePlayer;
     private Player inactivePlayer;
+
+    private final ColorAdjust grayscale = new ColorAdjust() {{
+        setSaturation(-0.5);
+        setContrast(0.2);
+        setBrightness(-0.2);
+    }};
 
     @FXML
     public void initializeUI() {
@@ -77,9 +89,9 @@ public class GameplayController {
 
                 rectangleBoardCellMap.put(rect, activePlayer.getBoardCellPlay(col, row));
 
-                if (rectangleBoardCellMap.get(rect).getShip() != null) {
-                    rect.setFill(Color.GREY);
-                }
+//                if (rectangleBoardCellMap.get(rect).getShip() != null) {
+//                   rect.setFill(Color.GREY);
+//                }
 
                 gameGridPane.add(rect, col, row);
             }
@@ -103,6 +115,7 @@ public class GameplayController {
             gameGridP2.setLayoutY(gameGridLayoutY);
 
             gameGridP1.setDisable(true);
+            gameGridP1.setEffect(grayscale);
         } else {
             gameGridP2.setLayoutX(sceneWidth / 2 - gridSize / 2);
             gameGridP2.setLayoutY(gameGridLayoutY);
@@ -111,8 +124,8 @@ public class GameplayController {
             gameGridP1.setVisible(false);
         }
 
-        continueButton.setLayoutX(sceneWidth / 2);
-        continueButton.setLayoutY(sceneHeight - sceneHeight / 8);
+//        continueButton.setLayoutX(sceneWidth / 2);
+//        continueButton.setLayoutY(sceneHeight - sceneHeight / 8);
     }
 
     private boolean checkForHit(Rectangle rect) {
@@ -136,7 +149,13 @@ public class GameplayController {
             color = Color.RED;
         }
 
-        rect.setFill(color);
+        FillTransition fillCell = new FillTransition(Duration.seconds(0.25), rect);
+        fillCell.setToValue(color);
+        fillCell.setCycleCount(1);
+        fillCell.setAutoReverse(false);
+
+        fillCell.play();
+        //rect.setFill(color);
         return true;
     }
 
@@ -155,6 +174,15 @@ public class GameplayController {
     private void switchActivePlayerUI() {
         gameGridP1.setDisable(!gameGridP1.isDisabled());
         gameGridP2.setDisable(!gameGridP2.isDisabled());
+
+        // Set Grayscale to the currently inactive Player's grid
+        if (gameGridP1.isDisabled()) {
+            gameGridP1.setEffect(grayscale);
+            gameGridP2.setEffect(null);
+        } else {
+            gameGridP2.setEffect(grayscale);
+            gameGridP1.setEffect(null);
+        }
 
         if (!sceneManager.getGameState().getIsMultiPlayer() && gameGridP2.isDisabled()) {
             computerShot();
@@ -194,15 +222,21 @@ public class GameplayController {
 
         gameGridP1.setDisable(true);
         gameGridP2.setDisable(true);
+        gameGridP1.setEffect(null);
+        gameGridP2.setEffect(null);
 
         continueButton.setDisable(false);
         continueButton.setVisible(true);
+
+        String winnerName = sceneManager.getGameState().getActivePlayer().getName();
+        winnerLabel.setText(winnerName + " has won!");
+        winnerLabel.setVisible(true);
 
         return true;
     }
 
     @FXML
     private void continueToNextScene(ActionEvent actionEvent) {
-        sceneManager.switchToWinScreen();
+        sceneManager.switchToEndScreen();
     }
 }
