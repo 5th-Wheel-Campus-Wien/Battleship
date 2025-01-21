@@ -1,5 +1,6 @@
 package at.fifthwheel.battleship;
 
+import javafx.animation.FillTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.effect.ColorAdjust;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -40,8 +43,15 @@ public class GameplayController {
     private Player activePlayer;
     private Player inactivePlayer;
 
+    private final ColorAdjust grayscale = new ColorAdjust() {{
+        setSaturation(-0.5);
+        setContrast(0.2);
+        setBrightness(-0.2);
+    }};
+
     @FXML
     public void initializeUI() {
+
 
         GameState gameState = sceneManager.getGameState();
 
@@ -111,6 +121,7 @@ public class GameplayController {
             gameGridP2.setLayoutY(gameGridLayoutY);
 
             gameGridP1.setDisable(true);
+            gameGridP1.setEffect(grayscale);
         } else {
             gameGridP1.setLayoutX(sceneWidth / 2 - gridSize / 2);
             gameGridP1.setLayoutY(gameGridLayoutY);
@@ -153,13 +164,28 @@ public class GameplayController {
             }
         }
 
-        rect.setFill(color);
+        FillTransition fillCell = new FillTransition(Duration.seconds(0.25), rect);
+        fillCell.setToValue(color);
+        fillCell.setCycleCount(1);
+        fillCell.setAutoReverse(false);
+
+        fillCell.play();
+        //rect.setFill(color);
         return true;
     }
 
     private void switchActivePlayerUI() {
         gameGridP1.setDisable(!gameGridP1.isDisabled());
         gameGridP2.setDisable(!gameGridP2.isDisabled());
+
+        // Set Grayscale to the currently inactive Player's grid
+        if (gameGridP1.isDisabled()) {
+            gameGridP1.setEffect(grayscale);
+            gameGridP2.setEffect(null);
+        } else {
+            gameGridP2.setEffect(grayscale);
+            gameGridP1.setEffect(null);
+        }
     }
 
     @FXML
@@ -174,6 +200,8 @@ public class GameplayController {
 
         gameGridP1.setDisable(true);
         gameGridP2.setDisable(true);
+        gameGridP1.setEffect(null);
+        gameGridP2.setEffect(null);
 
         continueButton.setDisable(false);
         continueButton.setVisible(true);
