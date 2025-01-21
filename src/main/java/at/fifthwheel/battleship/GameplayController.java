@@ -10,6 +10,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.effect.ColorAdjust;
 import javafx.util.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import java.util.Map;
 
 public class GameplayController {
 
+    private static final Logger logger = LoggerFactory.getLogger(GameplayController.class);
 
     private SceneManager sceneManager;
 
@@ -51,7 +54,7 @@ public class GameplayController {
 
     @FXML
     public void initializeUI() {
-
+        logger.info("Initializing Gameplay UI");
 
         GameState gameState = sceneManager.getGameState();
 
