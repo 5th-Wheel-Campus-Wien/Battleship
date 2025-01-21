@@ -20,7 +20,7 @@ public class Player {
     public void setName(String name){
         this.name = name;
     }
-    public boolean getIsP1(){
+    public boolean isPlayer1(){
         return IS_P1;
     }
 

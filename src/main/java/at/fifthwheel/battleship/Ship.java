@@ -1,6 +1,8 @@
 package at.fifthwheel.battleship;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.Arrays;
@@ -11,12 +13,6 @@ public class Ship {
     public IntegerProperty lengthProperty() {
         return length;
     }
-
-    private final IntegerProperty width;
-    public IntegerProperty widthProperty() {
-        return width;
-    }
-
     public int getLength() {
         return length.get();
     }
@@ -24,6 +20,10 @@ public class Ship {
         this.length.set(length);
     }
 
+    private final IntegerProperty width;
+    public IntegerProperty widthProperty() {
+        return width;
+    }
     public int getWidth() {
         return width.get();
     }
@@ -45,7 +45,11 @@ public class Ship {
     }
 
     public void incrementHitCount() {
-        if (isSunk()) {
+        if (getIsSunk()) {
+            return;
+        }
+        if (hitCount++ >= this.getLength()) {
+            setIsSunk(true);
             return;
         }
         hitCount++;
@@ -55,8 +59,15 @@ public class Ship {
         hitCount = 0;
     }
 
-    public boolean isSunk() {
-        return hitCount >= length.get();
+    private final BooleanProperty isSunk;
+    public BooleanProperty isSunkProperty() {
+        return isSunk;
+    }
+    public boolean getIsSunk() {
+        return isSunkProperty().get();
+    }
+    private void setIsSunk(boolean isSunk) {
+        this.isSunkProperty().set(isSunk);
     }
 
     public void resetBoardCellsSetupToShipMapping() {
@@ -71,6 +82,7 @@ public class Ship {
     public Ship(int length, int width) {
         this.length = new SimpleIntegerProperty(length);
         this.width = new SimpleIntegerProperty(width);
+        this.isSunk = new SimpleBooleanProperty(false);
 
         this.boardCellsSetup = new BoardCellSetup[length];
         this.boardCellsPlay = new BoardCellPlay[length];

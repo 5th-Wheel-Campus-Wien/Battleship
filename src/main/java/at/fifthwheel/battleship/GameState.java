@@ -34,11 +34,11 @@ public class GameState {
         }
         if (activePlayer.equals(player1)) {
             activePlayer = player2;
-            System.out.println("Active player switched - isP1 = " + activePlayer.getIsP1());
+            System.out.println("Active player switched - isP1 = " + activePlayer.isPlayer1());
             return activePlayer;
         }
         activePlayer = player1;
-        System.out.println("Active player switched - isP1 = " + activePlayer.getIsP1());
+        System.out.println("Active player switched - isP1 = " + activePlayer.isPlayer1());
         return activePlayer;
     }
 

@@ -1,6 +1,8 @@
 package at.fifthwheel.battleship;
 
 import javafx.animation.FillTransition;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -69,8 +71,8 @@ public class GameplayController {
 
         System.out.println("active player: " + activePlayer.getName());
 
-        GridPane gameGridPane = activePlayer.getIsP1() ? gameGridP1 : gameGridP2;
-        Map<Rectangle, BoardCellPlay> rectangleBoardCellMap = activePlayer.getIsP1() ? rectangleBoardCellMapP1 : rectangleBoardCellMapP2;
+        GridPane gameGridPane = activePlayer.isPlayer1() ? gameGridP1 : gameGridP2;
+        Map<Rectangle, BoardCellPlay> rectangleBoardCellMap = activePlayer.isPlayer1() ? rectangleBoardCellMapP1 : rectangleBoardCellMapP2;
 
         // Create grid cells
         for (int row = 0; row < GRID_SIZE; row++) {
@@ -79,11 +81,11 @@ public class GameplayController {
                 rect.setFill(Color.LIGHTBLUE); // Default water color
                 rect.setStroke(Color.BLACK);  // Cell border
 
+                rectangleBoardCellMap.put(rect, activePlayer.getBoardCellPlay(col, row));
+
                 rect.setOnMouseClicked(event -> {
                     shoot(rect);
                 });
-
-                rectangleBoardCellMap.put(rect, activePlayer.getBoardCellPlay(col, row));
 
                 gameGridPane.add(rect, col, row);
             }
@@ -108,7 +110,7 @@ public class GameplayController {
         gameGridP1.setDisable(true);
         gameGridP1.setEffect(grayscale);
 
-        if (!sceneManager.getGameState().getIsMultiPlayer()){
+        if (!sceneManager.getGameState().getIsMultiPlayer()) {
             for (Node node : gameGridP1.getChildren()) {
                 if (!(node instanceof Rectangle)) {
                     continue;
@@ -123,19 +125,19 @@ public class GameplayController {
     }
 
     private boolean checkForHit(Rectangle rect) {
-        Map<Rectangle, BoardCellPlay> rectCellMap = activePlayer.getIsP1() ? rectangleBoardCellMapP2 : rectangleBoardCellMapP1;
+        Map<Rectangle, BoardCellPlay> rectCellMap = activePlayer.isPlayer1() ? rectangleBoardCellMapP2 : rectangleBoardCellMapP1;
 
         inactivePlayer = sceneManager.getGameState().getPlayer1() == activePlayer ? sceneManager.getGameState().getPlayer2() : sceneManager.getGameState().getPlayer1();
 
         BoardCellPlay cell = rectCellMap.get(rect);
 
-        if (cell == null || cell.isHit()) {
+        if (cell == null || cell.getIsHit()) {
             return false;
         }
 
         Color color = Color.DARKGREEN;
 
-        cell.setHit();
+        cell.setIsHit(true);
 
         Ship ship = cell.getShip();
         if (ship != null) {
@@ -209,7 +211,7 @@ public class GameplayController {
         List<Ship> ships = inactivePlayer.getShips();
 
         for (Ship ship : ships) {
-            if (!ship.isSunk()) {
+            if (!ship.getIsSunk()) {
                 return false;
             }
         }
