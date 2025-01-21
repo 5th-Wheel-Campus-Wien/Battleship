@@ -1,16 +1,11 @@
 package at.fifthwheel.battleship;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class Ship {
 
-    private final IntegerProperty length;
-    private final IntegerProperty width;
+    private final int length;
+    private final int width;
 
     private int hitCount;
 
@@ -22,38 +17,43 @@ public class Ship {
     }
 
     public boolean isSunk() {
-        return hitCount >= length.get();
+        return hitCount >= length;
     }
 
-    public IntegerProperty lengthProperty() {
+
+    public int getLength() {
         return length;
     }
 
-    public IntegerProperty widthProperty() {
+    public int getWidth() {
         return width;
     }
 
-    public int getLength() {
-        return length.get();
+    private final BoardCellSetup[] boardCellsSetup;
+    private final BoardCellPlay[] boardCellsPlay;
+
+    public BoardCellSetup[] getBoardCellsSetup() {
+        return boardCellsSetup;
     }
 
-    public int getWidth() {
-        return width.get();
+    public BoardCellPlay[] getBoardCellsPlay() {
+        return boardCellsPlay;
     }
 
-    private final List<Point> boardIndices = new ArrayList<>();
-
-    public List<Point> getBoardIndices() {
-        return boardIndices;
+    public void resetBoardCellsSetupToShipMapping() {
+        for (BoardCellSetup cell : boardCellsSetup) {
+            if (cell != null) {
+                cell.setShip(null);
+            }
+        }
+        Arrays.fill(boardCellsSetup, null);
     }
 
     public Ship(int length, int width) {
-        this.length = new SimpleIntegerProperty(length);
-        this.width = new SimpleIntegerProperty(width);
-
-        for (int i = 0; i < length * width; i++) {
-            this.boardIndices.add(new Point(Integer.MIN_VALUE, Integer.MIN_VALUE));
-        }
+        this.length = length;
+        this.width = width;
+        this.boardCellsSetup = new BoardCellSetup[length];
+        this.boardCellsPlay = new BoardCellPlay[length];
     }
 
 }

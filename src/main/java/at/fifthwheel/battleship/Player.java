@@ -1,6 +1,5 @@
 package at.fifthwheel.battleship;
 
-import java.awt.*;
 import java.util.List;
 
 public class Player {
@@ -10,8 +9,8 @@ public class Player {
     private String name;
     private final boolean IS_P1;
 
-    private final BoardSetupCell[][] boardSetupCells = new BoardSetupCell[BOARD_SIZE][BOARD_SIZE];
-    private BoardCellPlay[][] boardCellsPlay = new BoardCellPlay[BOARD_SIZE][BOARD_SIZE];
+    private final BoardCellSetup[][] boardCellsSetup = new BoardCellSetup[BOARD_SIZE][BOARD_SIZE]; //TODO: alle Konstanten nach Konvention benennen(?)
+    private final BoardCellPlay[][] boardCellsPlay = new BoardCellPlay[BOARD_SIZE][BOARD_SIZE];
 
     private final List<Ship> SHIPS;
 
@@ -25,42 +24,33 @@ public class Player {
         return IS_P1;
     }
 
-    public BoardSetupCell[][] getBoardSetupCells(){
-        return boardSetupCells;
+    public List<Ship> getShips(){
+        return SHIPS;
+    }
+
+    public BoardCellSetup[][] getBoardCellsSetup(){
+        return boardCellsSetup;
     }
     public BoardCellPlay[][] getBoardCellsPlay(){
         return boardCellsPlay;
     }
 
-    public BoardSetupCell getBoardSetupCell(int x, int y){
-        return boardSetupCells[x][y];
+    public BoardCellSetup getBoardCellSetup(int x, int y){
+        return boardCellsSetup[x][y];
     }
     public BoardCellPlay getBoardCellPlay(int x, int y){
         return boardCellsPlay[x][y];
     }
 
-    public Point getBoardCellIndex(BoardCellPlay cell){
-        for (int i = 0; i < boardCellsPlay.length; i++) {
-            for (int j = 0; j < boardCellsPlay[i].length; j++) {
-                if (boardCellsPlay[i][j].equals(cell)) { // Use equals for object comparison
-                    return new Point(i, j); // Return the indices as a Point
-                }
-            }
-        }
-        return null;
-    }
-
-    public void setBoardCellsPlay(BoardCell[][] boardCells){
+    public void createBoardCellsPlay(BoardCellSetup[][] boardCells){
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                this.boardCellsPlay[row][col] = new BoardCellPlay(boardCells[row][col].getHasShip());
+                BoardCellSetup boardCellSetup = boardCells[row][col];
+                this.boardCellsPlay[row][col] = new BoardCellPlay(boardCellSetup.getX(), boardCellSetup.getY(), boardCellSetup.getShip());
             }
         }
     }
 
-    public List<Ship> getShips(){
-        return SHIPS;
-    }
 
     public Player(String name, boolean isP1) {
         this.name = name;
@@ -68,7 +58,7 @@ public class Player {
 
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
-                this.boardSetupCells[row][col] = new BoardSetupCell();
+                this.boardCellsSetup[row][col] = new BoardCellSetup(row, col);
             }
         }
 

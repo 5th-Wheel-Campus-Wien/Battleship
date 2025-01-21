@@ -27,9 +27,6 @@ public class GameState {
     public Player getActivePlayer() {
         return activePlayer;
     }
-    public void setActivePlayer(Player player) {
-        activePlayer = activePlayer;
-    }
 
     public Player switchActivePlayer() {
         if (activePlayer == null) {

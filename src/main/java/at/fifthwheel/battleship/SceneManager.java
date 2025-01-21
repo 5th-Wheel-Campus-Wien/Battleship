@@ -145,6 +145,7 @@ public class SceneManager {
             computerScreenController.setSceneManager(this);
 
             currentStage.setScene(computerScreenScene);
+            computerScreenController.initializeUI();
             currentStage.show();
         } catch (IOException e) {
             System.err.println("Scene [computerScreen] failed loading: " + e.getMessage());

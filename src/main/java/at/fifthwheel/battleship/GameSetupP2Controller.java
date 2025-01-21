@@ -1,7 +1,5 @@
 package at.fifthwheel.battleship;
 
-import java.util.List;
-
 public class GameSetupP2Controller extends GameSetupControllerBase {
 
     @Override
@@ -10,7 +8,7 @@ public class GameSetupP2Controller extends GameSetupControllerBase {
             return;
         }
 
-        player.setBoardCellsPlay(player.getBoardSetupCells());
+        player.createBoardCellsPlay(player.getBoardCellsSetup());
 
         sceneManager.getGameState().switchActivePlayer();
 

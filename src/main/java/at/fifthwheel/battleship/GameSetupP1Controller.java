@@ -8,14 +8,13 @@ public class GameSetupP1Controller extends GameSetupControllerBase {
             return;
         }
 
-        player.setBoardCellsPlay(player.getBoardSetupCells());
-
+        player.createBoardCellsPlay(player.getBoardCellsSetup());
 
         if (sceneManager.getGameState().getIsMultiPlayer()) {
             sceneManager.getGameState().switchActivePlayer();
             sceneManager.switchToP2Setup();
         } else {
-            sceneManager.switchToGameplay();
+            sceneManager.switchToComputerScreen();
         }
     }
 }

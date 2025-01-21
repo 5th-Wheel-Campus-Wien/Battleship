@@ -3,7 +3,6 @@ package at.fifthwheel.battleship;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -134,19 +133,6 @@ public final class GameSetupHelper {
         placeShip(lastPlacedShipRect);
     }
 
-    private void removePrevIndices(){
-        if (lastPlacedShipRect == null){
-            return;
-        }
-        // remove previous indices from boardCells
-        Ship ship = shipRectanglesToShipMap.get(lastPlacedShipRect);
-        for (Point p : ship.getBoardIndices()) {
-            if (p.x >= 0 && p.y >= 0){
-                player.getBoardSetupCell(p.x, p.y).setHasShip(false);
-            }
-        }
-    }
-
     public boolean placeShip(Rectangle shipRect) {
 
         if (isValidPlacement(shipRect)) {
@@ -176,14 +162,9 @@ public final class GameSetupHelper {
 
         Ship ship = shipRectanglesToShipMap.get(lastPlacedShipRect);
 
-        removePrevIndices();
+        ship.resetBoardCellsSetupToShipMapping();
 
         if (firstIndex < 0) {
-            for (Point p : ship.getBoardIndices()) {
-                player.getBoardSetupCell(p.x, p.y).setHasShip(false);
-                p.x = Integer.MIN_VALUE;
-                p.y = Integer.MIN_VALUE;
-            }
             return;
         }
 
@@ -192,16 +173,16 @@ public final class GameSetupHelper {
         int x = firstIndex % GRID_SIZE;
         int y = firstIndex / GRID_SIZE;
 
-        ship.getBoardIndices().set(0, new Point(x, y));
-        player.getBoardSetupCell(x, y).setHasShip(true);
+        for (int i = 0; i < ship.getBoardCellsSetup().length; i++) {
 
-        for (int i = 1; i < ship.getBoardIndices().size(); i++) {
+            ship.getBoardCellsSetup()[i] = player.getBoardCellSetup(x, y);
+            player.getBoardCellSetup(x, y).setShip(ship);
+
             if (horizontal) {
-                ship.getBoardIndices().set(i, new Point(++x, y));
+                x++;
             } else {
-                ship.getBoardIndices().set(i, new Point(x, ++y));
+                y++;
             }
-            player.getBoardSetupCell(x, y).setHasShip(true);
         }
 
     }

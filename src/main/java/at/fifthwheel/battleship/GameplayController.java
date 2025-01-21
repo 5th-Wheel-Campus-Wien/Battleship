@@ -2,6 +2,7 @@ package at.fifthwheel.battleship;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -46,7 +47,7 @@ public class GameplayController {
 
         createGridCells();
 
-        if (gameState.getIsMultiPlayer()) {
+        if (gameState.getIsMultiPlayer() || true) { // TODO Debugging - remove "true"
             activePlayer = gameState.switchActivePlayer();
 
             createGridCells();
@@ -71,18 +72,12 @@ public class GameplayController {
                 rect.setStroke(Color.BLACK);  // Cell border
 
                 rect.setOnMouseClicked(event -> {
-                    if (checkForHit(rect)) {
-                        if (checkIfWon()){
-                            return;
-                        }
-                        activePlayer = sceneManager.getGameState().switchActivePlayer();
-                        switchActivePlayerUI();
-                    }
+                    shoot(rect);
                 });
 
                 rectangleBoardCellMap.put(rect, activePlayer.getBoardCellPlay(col, row));
 
-                if(rectangleBoardCellMap.get(rect).getHasShip()){
+                if (rectangleBoardCellMap.get(rect).getShip() != null) {
                     rect.setFill(Color.GREY);
                 }
 
@@ -98,7 +93,7 @@ public class GameplayController {
 
         double gameGridLayoutY = sceneHeight / 2 - (gridSize / 2);
 
-        if (sceneManager.getGameState().getIsMultiPlayer()) {
+        if (sceneManager.getGameState().getIsMultiPlayer() || true) { // TODO remove "true"
             double borderToGridP1X = sceneWidth / 4 - gridSize / 2;
 
             gameGridP1.setLayoutX(borderToGridP1X);
@@ -109,11 +104,11 @@ public class GameplayController {
 
             gameGridP1.setDisable(true);
         } else {
-            gameGridP1.setLayoutX(sceneWidth / 2 - gridSize / 2);
-            gameGridP1.setLayoutY(gameGridLayoutY);
+            gameGridP2.setLayoutX(sceneWidth / 2 - gridSize / 2);
+            gameGridP2.setLayoutY(gameGridLayoutY);
 
-            gameGridP2.setDisable(true);
-            gameGridP2.setVisible(false);
+            gameGridP1.setDisable(true);
+            gameGridP1.setVisible(false);
         }
 
         continueButton.setLayoutX(sceneWidth / 2);
@@ -127,43 +122,72 @@ public class GameplayController {
 
         BoardCellPlay cell = rectCellMap.get(rect);
 
-        if (cell == null || cell.getHit()) {
+        if (cell == null || cell.isHit()) {
             return false;
         }
-
-        Point point = inactivePlayer.getBoardCellIndex(cell);
-        if (point == null) {
-            return false;
-        }
-
-        cell.setHit(true);
 
         Color color = Color.DARKGREEN;
 
-        List<Ship> ships = inactivePlayer.getShips();
-        for (Ship ship : ships) {
-            for (Point p : ship.getBoardIndices()) {
-                if (p.x == point.x && p.y == point.y) {
-                    ship.incrementHitCount();
-                    color = Color.RED;
-                }
-            }
+        cell.setHit();
+
+        Ship ship = cell.getShip();
+        if (ship != null) {
+            ship.incrementHitCount();
+            color = Color.RED;
         }
 
         rect.setFill(color);
         return true;
     }
 
+    private boolean shoot(Rectangle rect) {
+        if (checkForHit(rect)) {
+            if (checkIfWon()) {
+                return true;
+            }
+            activePlayer = sceneManager.getGameState().switchActivePlayer();
+            switchActivePlayerUI();
+            return true;
+        }
+        return false;
+    }
+
     private void switchActivePlayerUI() {
         gameGridP1.setDisable(!gameGridP1.isDisabled());
         gameGridP2.setDisable(!gameGridP2.isDisabled());
+
+        if (!sceneManager.getGameState().getIsMultiPlayer() && gameGridP2.isDisabled()) {
+            computerShot();
+        }
     }
 
-    private boolean checkIfWon(){
+    private void computerShot() {
+        while (true) {
+            int rectIndex = (int) (Math.random() * GRID_SIZE * GRID_SIZE);
+
+            Rectangle rect;
+
+            int gridIndex = 0;
+            for (Node node : gameGridP1.getChildren()) {
+                if (!(node instanceof Rectangle)) {
+                    continue;
+                }
+                if (rectIndex == gridIndex) {
+                    rect = (Rectangle) node;
+                    if (shoot(rect)) {
+                        return;
+                    }
+                }
+                gridIndex++;
+            }
+        }
+    }
+
+    private boolean checkIfWon() {
         List<Ship> ships = inactivePlayer.getShips();
 
         for (Ship ship : ships) {
-            if (!ship.isSunk()){
+            if (!ship.isSunk()) {
                 return false;
             }
         }

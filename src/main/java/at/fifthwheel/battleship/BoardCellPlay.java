@@ -1,26 +1,42 @@
 package at.fifthwheel.battleship;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+public class BoardCellPlay {
 
-public class BoardCellPlay extends BoardCell {
 
-    private final BooleanProperty hit = new SimpleBooleanProperty(false);
+    private final int x;
+    private final int y;
 
-    public BooleanProperty hitProperty() {
-        return hit;
+    private final Ship ship;
+
+    private boolean isHit = false;
+
+    public int getX(){
+        return x;
+    }
+    public int getY(){
+        return y;
     }
 
-    public boolean getHit() {
-        return hit.get();
+    public Ship getShip(){
+        return ship;
     }
 
-    public void setHit(boolean hit) {
-        this.hit.set(hit);
+    public boolean hasShip(){
+        return ship != null;
     }
 
-    public BoardCellPlay(boolean hasShip){
-        this.hasShip.set(hasShip);
+    public void setHit(){
+        isHit = true;
+    }
+
+    public boolean isHit(){
+        return isHit;
+    }
+
+    public BoardCellPlay(int x, int y, Ship ship) {
+        this.x = x;
+        this.y = y;
+        this.ship = ship;
     }
 
 }

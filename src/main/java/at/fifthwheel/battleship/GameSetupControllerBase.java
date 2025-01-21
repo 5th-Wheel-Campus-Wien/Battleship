@@ -8,9 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public abstract class GameSetupControllerBase {
 
@@ -36,7 +35,7 @@ public abstract class GameSetupControllerBase {
     private final Map<Rectangle, Ship> shipRectToShipMap = new HashMap<>();
     private final Map<Rectangle, Point> shipOrigins = new HashMap<>();
 
-    //private final Map<Rectangle, BoardSetupCell> rectangleBoardCellMap = new HashMap<>();
+    //private final Map<Rectangle, BoardCellSetup> rectangleBoardCellMap = new HashMap<>();
 
     private GameSetupHelper gameSetupHelper;
 
@@ -61,8 +60,8 @@ public abstract class GameSetupControllerBase {
 
                 gameSetupGrid.add(rect, col, row);
 
-                //BoardSetupCell boardCell = activePlayer.getBoardSetupCell(row, col);
-                //rectangleBoardCellMap.put(cell, boardCell);
+//                BoardCellSetup boardCell = player.getBoardCellSetup(row, col);
+//                rectangleBoardCellMap.put(rect, boardCell);
             }
         }
 
@@ -98,29 +97,6 @@ public abstract class GameSetupControllerBase {
     }
 
     public void setDragAndDrop(Rectangle shipRect) {
-//        shipRect.setOnMousePressed(event -> {
-//            // Save the initial position of the shipRect when dragging starts (relative to parent Pane)
-//            double relativeShipX = shipRect.getLayoutX();
-//            double relativeShipY = shipRect.getLayoutY();
-//            double mouseOffsetX = event.getSceneX() - relativeShipX;
-//            double mouseOffsetY = event.getSceneY() - relativeShipY;
-//            currentlyDraggedShipRect = shipRect;
-//
-//            // Set shipRect to front so it can be dragged in front of the game board
-//            shipRect.toFront();
-//
-//            // Set up dragging behavior
-//            shipRect.setOnMouseDragged(dragEvent -> {
-//                shipRect.relocate(dragEvent.getSceneX() - mouseOffsetX, dragEvent.getSceneY() - mouseOffsetY);
-//            });
-//
-//            // Handle mouse release to place the shipRect
-//            shipRect.setOnMouseReleased(releaseEvent -> {
-//                if (currentlyDraggedShipRect == shipRect) {
-//                    gameSetupHelper.placeShip(shipRect);    // TODO: Verursacht wahrscheinlich den "nochmal drauf klicken" Bug beim platzieren
-//                }
-//            });
-//        });
 
         shipRect.setOnMousePressed(event -> {
             // Save initial position and offsets
@@ -144,6 +120,7 @@ public abstract class GameSetupControllerBase {
                 gameSetupHelper.placeShip(shipRect);    // TODO: Verursacht wahrscheinlich den "nochmal drauf klicken" Bug beim platzieren
             }
         });
+
     }
 
     private void positionUIElements() {
@@ -172,9 +149,9 @@ public abstract class GameSetupControllerBase {
 
     boolean checkShipIndices() {
         for (Ship ship : shipRectToShipMap.values()) {
-            if (ship.getBoardIndices().stream().anyMatch(p -> p.x < 0 || p.y < 0)) {
+            if (Arrays.stream(ship.getBoardCellsSetup()).anyMatch(Objects::isNull)) {
                 // TODO: Alert / Label unter Button "alle Schiffe müssen platziert sein" ausgeben ?
-                System.out.println("Ship Length: " + ship.getLength() + ", Indices: " + ship.getBoardIndices() + " is not placed!"); // TODO Debugging (remove later)
+                System.out.println("Ship Length: " + ship.getLength() + ", Indices: " + ship.getBoardCellsSetup() + " is not placed!"); // TODO Debugging (remove later)
                 return false;
             }
         }

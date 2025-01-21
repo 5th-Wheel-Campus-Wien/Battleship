@@ -61,6 +61,9 @@ public class PlayerNameController {
         if (multiPlayerButton.isSelected()) {
             gameState.getPlayer2().setName(player2Name);
         }
+        else{
+            gameState.getPlayer2().setName("Computer");
+        }
 
         sceneManager.switchToP1Setup();
     }
