@@ -16,7 +16,7 @@ public class Player {
     private final BoardCellSetup[][] boardCellsSetup = new BoardCellSetup[BOARD_SIZE][BOARD_SIZE]; //TODO: alle Konstanten nach Konvention benennen(?)
     private final BoardCellPlay[][] boardCellsPlay = new BoardCellPlay[BOARD_SIZE][BOARD_SIZE];
 
-    private final List<Ship> SHIPS;
+    private final List<Ship> ships;
 
     public String getName(){
         return name;
@@ -29,7 +29,7 @@ public class Player {
     }
 
     public List<Ship> getShips(){
-        return SHIPS;
+        return ships;
     }
 
 
@@ -77,7 +77,7 @@ public class Player {
             }
         }
 
-        SHIPS = isP1 ? GameConfig.getShipsP1() : GameConfig.getShipsP2();
+        ships = isP1 ? GameConfig.getShipsP1() : GameConfig.getShipsP2();
     }
 
 }

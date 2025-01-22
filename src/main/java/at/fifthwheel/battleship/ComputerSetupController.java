@@ -62,8 +62,6 @@ public class ComputerSetupController {
         Player player = sceneManager.getGameState().getPlayer2();
         player.createBoardCellsPlay(player.getBoardCellsSetup());
         sceneManager.switchToGameplay();
-
-        printShipGrid();    // TODO Debugging (remove later)
     }
 
     /**
@@ -121,11 +119,6 @@ public class ComputerSetupController {
                 for (int j = 0; j < shipWidth; j++) {
                     // Place ship into array
                     shipIDs[row + j][col + i] = shipLength;
-//                    ship.getBoardCellsSetup()[i].set(i, new Point(col + i, row + j));
-//                    int pX = ship.getBoardCellsSetup()[i].getX();
-//                    int pY = ship.getBoardCellsSetup()[i].getY();
-//                    System.out.println("x: " + pX + " y: " + pY);
-                    // TODO Debugging (remove later)
                     Rectangle rect = getNodeByRowColumnIndex(row + j, col + i);
                     if (rect != null) {
                         rect.setFill(Color.GRAY);
@@ -133,7 +126,6 @@ public class ComputerSetupController {
                         BoardCellSetup cell = rectangleBoardCellSetupMap.get(rect);
                         cell.setShip(ship);
                         ship.getBoardCellsSetup()[i] = cell;
-                        System.out.println("Setup-cell: X: " + cell.getX() + " Y: " + cell.getY());
                     }
                 }
             }
@@ -154,11 +146,6 @@ public class ComputerSetupController {
                 for (int j = 0; j < shipWidth; j++) {
                     // Place ship into array
                     shipIDs[row + i][col + j] = shipLength;
-//                    ship.getBoardCellsSetup().set(i, new Point(col + j, row + i));
-//                    int pX = ship.getBoardCellsSetup()[i].getX();
-//                    int pY = ship.getBoardCellsSetup()[i].getY();
-//                    System.out.println("x: " + pX + " y: " + pY); // TODO Debugging (remove later)
-                    // TODO Debugging (remove later)
                     Rectangle rect = getNodeByRowColumnIndex(row + i, col + j);
                     if (rect != null) {
                         rect.setFill(Color.GRAY);
@@ -166,28 +153,13 @@ public class ComputerSetupController {
                         BoardCellSetup cell = rectangleBoardCellSetupMap.get(rect);
                         cell.setShip(ship);
                         ship.getBoardCellsSetup()[i] = cell;
-                        System.out.println("Setup-cell: X: " + cell.getX() + " Y: " + cell.getY());
                     }
                 }
             }
         }
-        for (BoardCellSetup cell : ship.getBoardCellsSetup()){
-            System.out.println("Ship - cells: X: " + cell.getX() + " Y: " + cell.getY());
-        }
         return true;
     }
 
-    // TODO Debugging: print Grid of placed Ships
-    private void printShipGrid() {
-        for (int[] row : shipIDs) {
-            for (int cell : row) {
-                System.out.print(cell + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    // TODO Debugging: Get current Grid Cell
     private Rectangle getNodeByRowColumnIndex(int y, int x) {
         for (javafx.scene.Node node : grid.getChildren()) {
             if (!(node instanceof Rectangle)) {
