@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.Region?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fifthwheel.battleship.EndScreenController">
-    <padding>
-        <Insets bottom="20" left="20" right="20" top="20" />
-    </padding>
-    <Label style="-fx-font-weight: bold;" text="Game Ended!">
-      <font>
-         <Font size="48.0" />
-      </font></Label>
-   <Region prefHeight="400.0" prefWidth="1240.0" />
-    <Button text="Start New Game"
-            onAction="#onNewGameButtonClicked">
-      <font>
-         <Font size="24.0" />
-      </font></Button>
-</VBox>
+<?import javafx.scene.layout.Region?>
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fifthwheel.battleship.EndScreenController" prefHeight="720" prefWidth="1280">
+
+
+    <ImageView fx:id="imageView" fitHeight="720" fitWidth="1280" preserveRatio="false">
+        <image>
+            <Image url="@../../../images/EndScreen.png" />
+        </image>
+    </ImageView>
+    <VBox alignment="CENTER" spacing="50">
+        <Label style="-fx-font-weight: bold;" text="Game Ended!">
+            <font>
+                <Font size="48.0" />
+            </font>
+        </Label>
+        <Region prefHeight="400" />
+        <Button onAction="#onNewGameButtonClicked" text="Start New Game">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Button>
+    </VBox>
+</StackPane>
