@@ -173,16 +173,6 @@ public class GameplayController {
         if (ship != null) {
             ship.incrementHitCount();
             color = Color.RED;
-
-            if (ship.getIsSunk()){
-                color = Color.DARKRED;
-                for (Rectangle rectangle : rectCellMap.keySet()) {
-                    BoardCellPlay boardCell = rectCellMap.get(rectangle);
-                    if (boardCell.getShip() == ship) {
-                        rectangle.setFill(color);
-                    }
-                }
-            }
         }
 
         FillTransition fillCell = new FillTransition(Duration.seconds(0.5), rect);

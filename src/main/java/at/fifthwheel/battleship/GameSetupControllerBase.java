@@ -59,6 +59,7 @@ public abstract class GameSetupControllerBase {
         this.gameSetupHelper = new GameSetupHelper(gameSetupGrid, shipContainer, shipRectToShipMap, shipOrigins, player);
         ships = player.getShips();
 
+        // rotate ships in case they were rotated in a previous game
         for (Ship ship : ships) {
             if (ship.getLength() < ship.getWidth()){
                 int origWidth = ship.getWidth();
