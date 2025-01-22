@@ -62,6 +62,10 @@ public class PlayerNameController {
         String player1Name = player1NameField.getText().trim();
         String player2Name = player2NameField.getText().trim();
 
+        if (player1Name.isEmpty()) {
+            showAlert("Error!", "Player 1 Name is required");
+            return;
+        }
         if (multiPlayerButton.isSelected() && player2Name.isEmpty()) {
             showAlert("Error!", "Player 2 Name is required");
             return;
