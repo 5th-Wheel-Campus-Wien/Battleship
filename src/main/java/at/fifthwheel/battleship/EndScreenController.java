@@ -24,9 +24,11 @@ public class EndScreenController {
     protected void onNewGameButtonClicked(ActionEvent event) {
         for (Ship ship : sceneManager.getGameState().getPlayer1().getShips()){
             ship.resetHitCount();
+            ship.resetBoardCellsSetupToShipMapping();
         }
         for (Ship ship : sceneManager.getGameState().getPlayer2().getShips()){
             ship.resetHitCount();
+            ship.resetBoardCellsSetupToShipMapping();
         }
         sceneManager.switchToPlayerNameSelection();
     }
