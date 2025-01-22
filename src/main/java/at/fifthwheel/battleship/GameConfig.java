@@ -32,9 +32,6 @@ public final class GameConfig {
             .map(ship -> new Ship(ship.getLength(), ship.getWidth()))
             .collect(Collectors.toList());
 
-//    private static final List<Ship> shipsComputer = ships.stream()
-//            .map(ship -> new Ship(ship.getLength(), ship.getWidth()))
-//            .collect(Collectors.toList());
 
     public static int getCellSize(){
         return CELL_SIZE;
@@ -49,7 +46,6 @@ public final class GameConfig {
     public static List<Ship> getShipsP2(){
         return shipsP2;
     }
-//    public static List<Ship> getShipsComputer(){ return shipsComputer; }
 
     /**
      * Private constructor to prevent instantiation of this utility class.

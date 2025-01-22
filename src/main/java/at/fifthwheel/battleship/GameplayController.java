@@ -93,8 +93,6 @@ public class GameplayController {
      */
     private void createGridCells() {
 
-        System.out.println("active player: " + activePlayer.getName());
-
         GridPane gameGridPane = activePlayer.isPlayer1() ? gameGridP1 : gameGridP2;
         Map<Rectangle, BoardCellPlay> rectangleBoardCellMap = activePlayer.isPlayer1() ? rectangleBoardCellMapP1 : rectangleBoardCellMapP2;
 

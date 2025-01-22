@@ -177,7 +177,6 @@ public abstract class GameSetupControllerBase {
         for (Ship ship : shipRectToShipMap.values()) {
             if (Arrays.stream(ship.getBoardCellsSetup()).anyMatch(Objects::isNull)) {
                 // TODO: Alert / Label unter Button "alle Schiffe müssen platziert sein" ausgeben ?
-                System.out.println("Ship Length: " + ship.getLength() + ", Indices: " + ship.getBoardCellsSetup() + " is not placed!"); // TODO Debugging (remove later)
                 return false;
             }
         }
