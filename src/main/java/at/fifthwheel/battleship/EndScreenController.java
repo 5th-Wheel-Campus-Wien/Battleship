@@ -23,13 +23,14 @@ public class EndScreenController {
     @FXML
     protected void onNewGameButtonClicked(ActionEvent event) {
         for (Ship ship : sceneManager.getGameState().getPlayer1().getShips()){
-            ship.resetHitCount();
+            ship.resetShips();
             ship.resetBoardCellsSetupToShipMapping();
         }
         for (Ship ship : sceneManager.getGameState().getPlayer2().getShips()){
-            ship.resetHitCount();
+            ship.resetShips();
             ship.resetBoardCellsSetupToShipMapping();
         }
+
         sceneManager.switchToPlayerNameSelection();
     }
 }

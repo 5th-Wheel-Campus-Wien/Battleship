@@ -61,8 +61,9 @@ public class Ship {
         }
     }
 
-    public void resetHitCount() {
+    public void resetShips() {
         hitCount = 0;
+        setIsSunk(false);
     }
 
     /** Indicates whether the ship is sunk. */
