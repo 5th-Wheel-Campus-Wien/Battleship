@@ -28,7 +28,7 @@ public class BattleShipApp extends Application {
         SceneManager sceneManager = new SceneManager(stage);
 
         stage.setTitle("Battleship");
-
+        stage.setResizable(false);
         logger.info("Starting Battleship");
 
         sceneManager.switchToTitleScreen();

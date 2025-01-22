@@ -3,6 +3,8 @@ package at.fifthwheel.battleship;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,6 +15,8 @@ import java.util.Map;
  * It handles loading and switching between scenes, as well as storing global data shared between scenes.
  */
 public class SceneManager {
+    private static final Logger logger = LoggerFactory.getLogger(SceneManager.class);
+
     private Stage currentStage;
     private Map<String, Object> globalData = new HashMap<>();
 
@@ -46,8 +50,7 @@ public class SceneManager {
             currentStage.setScene(titleScreenScene);
             currentStage.show();
         } catch (IOException e) {
-            System.err.println("Scene [titleScreen] failed loading: " + e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -64,8 +67,7 @@ public class SceneManager {
             currentStage.setScene(playerNameScene);
             currentStage.show();
         } catch (IOException e) {
-            System.err.println("Scene [playerNameSelection] failed loading: " + e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -83,8 +85,7 @@ public class SceneManager {
             gameSetupP1Controller.initializeUI();
             currentStage.show();
         } catch (IOException e) {
-            System.err.println("Scene [gameSetup] failed loading: " + e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -102,8 +103,7 @@ public class SceneManager {
             gameSetupP2Controller.initializeUI();
             currentStage.show();
         } catch (IOException e) {
-            System.err.println("Scene [gameSetup] failed loading: " + e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -121,8 +121,7 @@ public class SceneManager {
             gameplayController.initializeUI();
             currentStage.show();
         } catch (IOException e) {
-            System.err.println("Scene [gameplay] failed loading: " + e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -139,8 +138,7 @@ public class SceneManager {
             currentStage.setScene(endScreenScene);
             currentStage.show();
         } catch (IOException e) {
-            System.err.println("Scene [endScreen] failed loading: " + e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -158,8 +156,7 @@ public class SceneManager {
             computerScreenController.initializeUI();
             currentStage.show();
         } catch (IOException e) {
-            System.err.println("Scene [computerScreen] failed loading: " + e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
