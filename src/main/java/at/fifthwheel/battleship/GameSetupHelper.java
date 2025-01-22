@@ -97,7 +97,7 @@ public final class GameSetupHelper {
         return gridIndex;
     }
 
-    private boolean isValidPlacement(Rectangle shipRect) {
+    private boolean validateShipPlacement(Rectangle shipRect) {
         var shipRectPositionScene = new Point((int) shipRect.localToScene(0, 0).getX(), (int) shipRect.localToScene(0, 0).getY());
 
         if (shipRectPositionScene.x < (gameSetupGrid.getLayoutX() - CELL_SIZE / 4)
@@ -135,9 +135,11 @@ public final class GameSetupHelper {
         placeShip(lastPlacedShipRect);
     }
 
+
+
     public boolean placeShip(Rectangle shipRect) {
 
-        if (isValidPlacement(shipRect)) {
+        if (validateShipPlacement(shipRect)) {
 
             int gridPaneIndex = snapToGrid(shipRect);
             setShipIndices(gridPaneIndex);
