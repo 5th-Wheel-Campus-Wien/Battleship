@@ -7,6 +7,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.Arrays;
 
+/**
+ * The Ship class represents a ship in the Battleship game. It handles the ship's size (length and width),
+ * its hit count, whether it is sunk, and its corresponding cells on the board.
+ */
 public class Ship {
 
     private final IntegerProperty length;
@@ -44,6 +48,10 @@ public class Ship {
         return boardCellsPlay;
     }
 
+    /**
+     * Increments the hit count of the ship. If the ship has been hit enough times (equal to its length),
+     * it will be marked as sunk.
+     */
     public void incrementHitCount() {
         if (getIsSunk()) {
             return;
@@ -59,7 +67,13 @@ public class Ship {
         hitCount = 0;
     }
 
+    /** Indicates whether the ship is sunk. */
     private final BooleanProperty isSunk;
+
+    /**
+     * Returns the BooleanProperty representing whether the ship is sunk.
+     * @return The sunk status property.
+     */
     public BooleanProperty isSunkProperty() {
         return isSunk;
     }
@@ -78,7 +92,12 @@ public class Ship {
         }
         Arrays.fill(boardCellsSetup, null);
     }
-
+    /**
+     *
+     * Constructs a new Ship with the specified length and width.
+     * @param length The length of the ship.
+     * @param width The width of the ship.
+     */
     public Ship(int length, int width) {
         this.length = new SimpleIntegerProperty(length);
         this.width = new SimpleIntegerProperty(width);

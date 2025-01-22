@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A configuration class that holds constants and static data related to the game, such as the
+ * board size, cell size, and the ships available for both players.
+ * This class provides access to the game setup, including ships' configurations for both players.
+ */
 public final class GameConfig {
 
     private static final int CELL_SIZE = 35;
     private static final int BOARD_SIZE = 10;
 
+    /**
+     * A predefined list of ships for the game, each defined by its length and width.
+     */
     private static final List<Ship> ships = List.of(
             new Ship(5, 1),
             new Ship(4, 1),
@@ -44,6 +52,9 @@ public final class GameConfig {
     }
 //    public static List<Ship> getShipsComputer(){ return shipsComputer; }
 
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
     private GameConfig(){
     }
 }
