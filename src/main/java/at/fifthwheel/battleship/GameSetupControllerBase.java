@@ -59,6 +59,16 @@ public abstract class GameSetupControllerBase {
         this.gameSetupHelper = new GameSetupHelper(gameSetupGrid, shipContainer, shipRectToShipMap, shipOrigins, player);
         ships = player.getShips();
 
+        for (Ship ship : ships) {
+            if (ship.getLength() < ship.getWidth()){
+                int origWidth = ship.getWidth();
+                int origLength = ship.getLength();
+
+                ship.setLength(origWidth);
+                ship.setWidth(origLength);
+            }
+        }
+
         // Create grid cells
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
@@ -102,6 +112,7 @@ public abstract class GameSetupControllerBase {
         }
 
         positionUIElements();
+
     }
 
     /**

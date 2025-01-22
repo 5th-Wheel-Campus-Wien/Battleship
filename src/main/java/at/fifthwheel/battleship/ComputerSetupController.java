@@ -5,8 +5,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +25,7 @@ public class ComputerSetupController {
     @FXML
     private GridPane grid;
 
-    private static final List<Ship> shipsComputer = GameConfig.getShipsP2();
+    private static final List<Ship> SHIPS = GameConfig.getShipsP2();
     private static final int GRID_SIZE = GameConfig.getBoardSize();
     private static final int CELL_SIZE = GameConfig.getCellSize();
 
@@ -71,7 +69,7 @@ public class ComputerSetupController {
     private void placeShipsRandom() {
         int row = 0;
         int col = 0;
-        for (Ship ship : shipsComputer) {
+        for (Ship ship : SHIPS) {
             boolean shipPlaced = false;
 
             // Look for suitable Start position

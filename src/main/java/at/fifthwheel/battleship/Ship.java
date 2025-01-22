@@ -56,11 +56,9 @@ public class Ship {
         if (getIsSunk()) {
             return;
         }
-        if (hitCount++ >= this.getLength()) {
+        if (++hitCount >= this.getLength()) {
             setIsSunk(true);
-            return;
         }
-        hitCount++;
     }
 
     public void resetHitCount() {
