@@ -96,62 +96,42 @@ public class ComputerSetupController {
     private boolean tryPlaceShip(Ship ship, int row, int col, boolean rotated) {
         int shipLength = ship.getLength();
         int shipWidth = ship.getWidth();
+        int maxRow = rotated ? row + shipWidth : row + shipLength;
+        int maxCol = rotated ? col + shipLength : col + shipWidth;
 
-        if (rotated) {
-            // Check for Out of Bounds
-            if (col + shipLength > GRID_SIZE) {
-                return false;
-            }
-            for (int i = 0; i < shipLength; i++) {
-                for (int j = 0; j < shipWidth; j++) {
-                    // Check for Overlap
-                    if (shipIDs[row + j][col + i] != 0) {
-                        return false;
-                    }
-                }
-            }
-            for (int i = 0; i < shipLength; i++) {
-                for (int j = 0; j < shipWidth; j++) {
-                    // Place ship into array
-                    shipIDs[row + j][col + i] = shipLength;
-                    Rectangle rect = getNodeByRowColumnIndex(row + j, col + i);
-                    if (rect != null) {
-                        rect.setFill(Color.GRAY);
+        // Check for Out of Bounds
+        if (maxRow > GRID_SIZE || maxCol > GRID_SIZE) {
+            return false;
+        }
 
-                        BoardCellSetup cell = rectangleBoardCellSetupMap.get(rect);
-                        cell.setShip(ship);
-                        ship.getBoardCellsSetup()[i] = cell;
-                    }
-                }
-            }
-        } else {
-            // Check for Out of Bounds
-            if (row + shipLength > GRID_SIZE) {
-                return false;
-            }
-            for (int i = 0; i < shipLength; i++) {
-                for (int j = 0; j < shipWidth; j++) {
-                    // Check for Overlap
-                    if (shipIDs[row + i][col + j] != 0) {
-                        return false;
-                    }
-                }
-            }
-            for (int i = 0; i < shipLength; i++) {
-                for (int j = 0; j < shipWidth; j++) {
-                    // Place ship into array
-                    shipIDs[row + i][col + j] = shipLength;
-                    Rectangle rect = getNodeByRowColumnIndex(row + i, col + j);
-                    if (rect != null) {
-                        rect.setFill(Color.GRAY);
-
-                        BoardCellSetup cell = rectangleBoardCellSetupMap.get(rect);
-                        cell.setShip(ship);
-                        ship.getBoardCellsSetup()[i] = cell;
-                    }
+        // Check for Overlap
+        for (int i = 0; i < shipLength; i++) {
+            for (int j = 0; j < shipWidth; j++) {
+                int currentRow = rotated ? row + j : row + i;
+                int currentCol = rotated ? col + i : col + j;
+                if (shipIDs[currentRow][currentCol] != 0) {
+                    return false;
                 }
             }
         }
+
+        // Place ship into array and update UI
+        for (int i = 0; i < shipLength; i++) {
+            for (int j = 0; j < shipWidth; j++) {
+                int currentRow = rotated ? row + j : row + i;
+                int currentCol = rotated ? col + i : col + j;
+
+                shipIDs[currentRow][currentCol] = shipLength;
+                Rectangle rect = getNodeByRowColumnIndex(currentRow, currentCol);
+                if (rect != null) {
+                    rect.setFill(Color.GRAY);
+                    BoardCellSetup cell = rectangleBoardCellSetupMap.get(rect);
+                    cell.setShip(ship);
+                    ship.getBoardCellsSetup()[i] = cell;
+                }
+            }
+        }
+
         return true;
     }
 
