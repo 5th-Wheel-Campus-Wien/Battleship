@@ -13,7 +13,7 @@ public class Player {
     private String name;
     private final boolean IS_P1;
 
-    private final BoardCellSetup[][] boardCellsSetup = new BoardCellSetup[BOARD_SIZE][BOARD_SIZE]; //TODO: alle Konstanten nach Konvention benennen(?)
+    private final BoardCellSetup[][] boardCellsSetup = new BoardCellSetup[BOARD_SIZE][BOARD_SIZE];
     private final BoardCellPlay[][] boardCellsPlay = new BoardCellPlay[BOARD_SIZE][BOARD_SIZE];
 
     private final List<Ship> ships;

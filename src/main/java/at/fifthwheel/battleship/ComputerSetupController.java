@@ -81,10 +81,7 @@ public class ComputerSetupController {
                 boolean rotated = Math.random() > 0.5;
 
                 shipPlaced = tryPlaceShip(ship, row, col, rotated); // Try to place the Ship at Start position
-                System.out.println("Row: " + row + " Col: " + col + " Rotated: " + rotated); // TODO Debugging (remove later)
             }
-
-            System.out.println("Ship placed: " + ship.getLength()); // TODO Debugging (remove later)
         }
 
     }
