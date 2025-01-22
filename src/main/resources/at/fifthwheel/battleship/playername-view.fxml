@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="720" prefWidth="1280" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fifthwheel.battleship.PlayerNameController">
+    <Label text="Welcome to Battleship!">
+      <font>
+         <Font size="48.0" />
+      </font></Label>
+
+    <RadioButton fx:id="singlePlayerButton" text="Single Player" selected="true">
+      <font>
+         <Font size="18.0" />
+      </font></RadioButton>
+    <RadioButton fx:id="multiPlayerButton" text="Multi Player">
+      <font>
+         <Font size="18.0" />
+      </font></RadioButton>
+
+    <TextField fx:id="player1NameField" promptText="Player 1">
+      <font>
+         <Font size="18.0" />
+      </font></TextField>
+    <TextField fx:id="player2NameField" disable="true" promptText="Player 2">
+      <font>
+         <Font size="18.0" />
+      </font></TextField>
+
+    <Button fx:id="startButton" text="Start">
+      <font>
+         <Font size="24.0" />
+      </font></Button>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

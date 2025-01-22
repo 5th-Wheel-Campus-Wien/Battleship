@@ -1,9 +1,11 @@
-module org.example.battleship {
+module at.fifthwheel.battleship {
     requires javafx.controls;
     requires javafx.fxml;
 
     requires com.almasb.fxgl.all;
+    requires java.desktop;
+    requires org.slf4j;
 
-    opens org.example.battleship to javafx.fxml;
-    exports org.example.battleship;
+    opens at.fifthwheel.battleship to javafx.fxml;
+    exports at.fifthwheel.battleship;
 }

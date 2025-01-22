@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="at.fifthwheel.battleship.GameSetupP1Controller"
+            prefHeight="720" prefWidth="1280">
+
+    <!-- Ship display area (left side) -->
+    <Pane fx:id="shipContainer"
+          layoutX="55">
+    </Pane>
+
+    <GridPane fx:id="gameSetupGrid" gridLinesVisible="true"
+              viewOrder="1">
+        <!-- The grid is dynamically populated in the controller -->
+    </GridPane>
+
+    <Button fx:id="rotateShipButton"
+            text="Rotate"
+            onAction="#rotateShip"/>
+
+    <Button fx:id="continueButton"
+            text="Weiter"
+            onAction="#continueToNextScene"/>
+
+</AnchorPane>
