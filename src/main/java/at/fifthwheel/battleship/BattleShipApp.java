@@ -18,9 +18,6 @@ public class BattleShipApp extends Application {
     /** Logger instance for logging application events. */
     private static final Logger logger = LoggerFactory.getLogger(BattleShipApp.class);
 
-    /** The scene manager responsible for managing scenes in the application. */
-    private SceneManager sceneManager;
-
     /**
      * Starts the JavaFX application.
      * @param stage The primary stage for this application, provided by the JavaFX framework.

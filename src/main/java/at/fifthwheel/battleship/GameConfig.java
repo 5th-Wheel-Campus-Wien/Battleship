@@ -1,6 +1,5 @@
 package at.fifthwheel.battleship;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,7 @@ public final class GameConfig {
     /**
      * A predefined list of ships for the game, each defined by its length and width.
      */
-    private static final List<Ship> ships = List.of(
+    private static final List<Ship> SHIPS = List.of(
             new Ship(5, 1),
             new Ship(4, 1),
             new Ship(3, 1),
@@ -25,11 +24,11 @@ public final class GameConfig {
             new Ship(2, 1)
     );
 
-    private static final List<Ship> shipsP1 = ships.stream()
+    private static final List<Ship> shipsP1 = SHIPS.stream()
             .map(ship -> new Ship(ship.getLength(), ship.getWidth()))
             .collect(Collectors.toList());
 
-    private static final List<Ship> shipsP2 = ships.stream()
+    private static final List<Ship> shipsP2 = SHIPS.stream()
             .map(ship -> new Ship(ship.getLength(), ship.getWidth()))
             .collect(Collectors.toList());
 

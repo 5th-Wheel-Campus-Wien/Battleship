@@ -175,9 +175,13 @@ public class GameplayController {
         if (ship != null) {
             ship.incrementHitCount();
             color = Color.RED;
+
+            if (ship.getIsSunk()){
+                color = Color.DARKRED;
+            }
         }
 
-        FillTransition fillCell = new FillTransition(Duration.seconds(0.75), rect);
+        FillTransition fillCell = new FillTransition(Duration.seconds(0.5), rect);
         fillCell.setToValue(color);
         fillCell.setCycleCount(1);
         fillCell.setAutoReverse(false);

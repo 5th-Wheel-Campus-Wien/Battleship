@@ -16,13 +16,10 @@ public class SceneManager {
     private Stage currentStage;
     private Map<String, Object> globalData = new HashMap<>();
 
-    private GameState gameState = new GameState();
+    private final GameState gameState = new GameState();
 
     public GameState getGameState() {
         return gameState;
-    }
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
     }
 
     public SceneManager(Stage currentStage) {
