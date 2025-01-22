@@ -11,6 +11,11 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Abstract base controller for setting up the game grid and ship placement in the Battleship game.
+ * This controller handles ship creation, drag-and-drop functionality, ship rotation, and grid setup.
+ * Subclasses should implement the abstract method to proceed to the next scene after the game setup.
+ */
 public abstract class GameSetupControllerBase {
 
     SceneManager sceneManager;
@@ -43,7 +48,10 @@ public abstract class GameSetupControllerBase {
 
     private Rectangle currentlyDraggedShipRect;
 
-
+    /**
+     * Initializes the game setup UI, including creating grid cells, displaying ships, and setting up drag-and-drop.
+     * This method is called during the FXML initialization phase.
+     */
     @FXML
     public void initializeUI() {
 
@@ -96,6 +104,11 @@ public abstract class GameSetupControllerBase {
         positionUIElements();
     }
 
+    /**
+     * Sets up drag-and-drop functionality for the given ship rectangle.
+     * Allows the user to click and drag a ship to place it on the game board.
+     * @param shipRect The rectangle representing a ship.
+     */
     public void setDragAndDrop(Rectangle shipRect) {
 
         shipRect.setOnMousePressed(event -> {
@@ -123,6 +136,10 @@ public abstract class GameSetupControllerBase {
 
     }
 
+    /**
+     * Positions the game setup grid and other UI elements on the screen.
+     * This method ensures that the elements are properly centered and aligned.
+     */
     private void positionUIElements() {
 
         double sceneWidth = gameSetupGrid.getScene().getWidth();
@@ -142,11 +159,20 @@ public abstract class GameSetupControllerBase {
         continueButton.setLayoutY(sceneHeight - sceneHeight / 8);
     }
 
+    /**
+     * Rotates the currently selected ship in the ship container.
+     * This method calls the helper function to perform the rotation logic.
+     */
     @FXML
     private void rotateShip() {
         gameSetupHelper.rotateShip();
     }
 
+    /**
+     * Checks if all ships have been placed on the grid by the player.
+     * Each ship must occupy a valid grid space before proceeding.
+     * @return true if all ships are placed correctly, false otherwise.
+     */
     boolean checkShipIndices() {
         for (Ship ship : shipRectToShipMap.values()) {
             if (Arrays.stream(ship.getBoardCellsSetup()).anyMatch(Objects::isNull)) {
@@ -158,6 +184,10 @@ public abstract class GameSetupControllerBase {
         return true;
     }
 
+    /**
+     * Abstract method that should be implemented in subclasses to handle the transition to the next scene.
+     * This method will be called when the user presses the continue button after completing ship placement.
+     */
     @FXML
     abstract void continueToNextScene();
 

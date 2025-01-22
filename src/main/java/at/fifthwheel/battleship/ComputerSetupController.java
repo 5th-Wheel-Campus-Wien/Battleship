@@ -10,7 +10,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Controller responsible for setting up the computer's grid in the Battleship game.
+ * This class initializes the computer's game board, places ships randomly,
+ * and transitions to the gameplay phase.
+ */
 public class ComputerSetupController {
 
     private SceneManager sceneManager;
@@ -19,6 +23,7 @@ public class ComputerSetupController {
         this.sceneManager = sceneManager;
     }
 
+    /** The GridPane representing the computer's game board in the UI. */
     @FXML
     private GridPane grid;
 
@@ -28,8 +33,14 @@ public class ComputerSetupController {
 
     private final int[][] shipIDs = new int[GRID_SIZE][GRID_SIZE];
 
+    /** Map linking UI rectangles to logical board cells. */
     private final Map<Rectangle, BoardCellSetup> rectangleBoardCellSetupMap = new HashMap<>();
 
+    /**
+     * Initializes the UI for the computer's game board.
+     * Creates a grid of rectangles representing the game board, assigns ships to the board randomly,
+     * and transitions to the gameplay phase.
+     */
     @FXML
     public void initializeUI() {
 
@@ -46,7 +57,6 @@ public class ComputerSetupController {
                 grid.add(rect, col, row);
             }
         }
-
         placeShipsRandom();
 
         Player player = sceneManager.getGameState().getPlayer2();
@@ -56,7 +66,10 @@ public class ComputerSetupController {
         printShipGrid();    // TODO Debugging (remove later)
     }
 
-    // Place ships on the Grid randomly
+    /**
+     * Places ships randomly on the grid.
+     * Ships are positioned on the grid, ensuring they fit within bounds and do not overlap.
+     */
     private void placeShipsRandom() {
         int row = 0;
         int col = 0;

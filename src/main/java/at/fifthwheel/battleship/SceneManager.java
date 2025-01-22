@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The SceneManager class is responsible for managing the different scenes in the Battleship game application.
+ * It handles loading and switching between scenes, as well as storing global data shared between scenes.
+ */
 public class SceneManager {
     private Stage currentStage;
     private Map<String, Object> globalData = new HashMap<>();
@@ -28,6 +32,9 @@ public class SceneManager {
 
     // Scene switching Methods
 
+    /**
+     * Switches to the Title Screen scene.
+     */
     public void switchToTitleScreen() {
         try {
             FXMLLoader titleScreenLoader = new FXMLLoader(getClass().getResource("titlescreen-view.fxml"));
@@ -43,6 +50,9 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Switches to the Player Name Selection scene.
+     */
     public void switchToPlayerNameSelection() {
         try {
             FXMLLoader playerNameLoader = new FXMLLoader(getClass().getResource("playername-view.fxml"));
@@ -58,6 +68,9 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Switches to the Player 1 Setup scene.
+     */
     public void switchToP1Setup() {
         try {
             FXMLLoader gameSetupLoader = new FXMLLoader(getClass().getResource("game-setup-P1-view.fxml"));
@@ -74,6 +87,9 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Switches to the Player 2 Setup scene.
+     */
     public void switchToP2Setup() {
         try {
             FXMLLoader gameSetupLoader = new FXMLLoader(getClass().getResource("game-setup-P2-view.fxml"));
@@ -90,6 +106,9 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Switches to the Gameplay scene.
+     */
     public void switchToGameplay() {
         try {
             FXMLLoader gameplayLoader = new FXMLLoader(getClass().getResource("gameplay-view.fxml"));
@@ -106,6 +125,9 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Switches to the End Screen scene.
+     */
     public void switchToEndScreen() {
         try {
             FXMLLoader endScreenLoader = new FXMLLoader(getClass().getResource("endscreen-view.fxml"));
@@ -121,6 +143,9 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Switches to the Computer Setup screen.
+     */
     public void switchToComputerScreen() {
         try {
             FXMLLoader computerScreenLoader = new FXMLLoader(getClass().getResource("computer-setup-view.fxml"));
@@ -139,6 +164,11 @@ public class SceneManager {
 
     // Global Data Manipulation
 
+    /**
+     * Sets a global data key-value pair.
+     * @param key The key to store the value under.
+     * @param value The value to store.
+     */
     public void setGlobalData(String key, Object value) {
         globalData.put(key, value);
     }
