@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import javafx.scene.layout.Region?>
-<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fifthwheel.battleship.EndScreenController" prefHeight="720" prefWidth="1280">
+<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fifthwheel.battleship.EndScreenController" prefHeight="720" prefWidth="1280">
 
 
     <ImageView fx:id="imageView" fitHeight="720" fitWidth="1280" preserveRatio="false">
